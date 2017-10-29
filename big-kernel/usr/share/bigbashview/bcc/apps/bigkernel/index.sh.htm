@@ -1,0 +1,118 @@
+#!/bin/bash
+
+export TEXTDOMAINDIR="/usr/share/locale"
+export TEXTDOMAIN=bigkernel
+
+# Import BigControlCenter base modules / Importa os módulos básicos do BigControlCenter
+# That's include jquery and materialize / Isso inclui o jquery e o materialize
+# http://materializecss.com/
+. /usr/share/bigbashview/bcc/shell/base.sh
+
+
+#Title/Description variables
+bcc_title="Boot, Kernel, Grub, Initrd e Drivers"
+bcc_description=$"Caso não saiba o que está fazendo, peça ajuda no fórum BigLinux."
+# To disable logo use: bcc_logo="no"
+bcc_logo="logo.png"
+
+# About variables
+# To disable about use: bcc_about="no"
+bcc_about="yes"
+bcc_about_license=$"GPL v2 or greater"
+bcc_about_by=$"Bruno Gonçalves"
+bcc_about_release_date=$"15/07/2017"
+bcc_about_url_code=$"https://github.com/biglinux/bigkernel"
+bcc_about_url_project=$"https://www.biglinux.com.br"
+
+# Print header in screen
+bcc_header
+
+# Import tweaks for theme
+echo '<link rel="stylesheet" type="text/css" href="theme.css">'
+
+
+cd "/usr/share/bigbashview/bcc/apps/bigremaster/config"
+id=$p_id
+selected_folder="$(grep ^folder "$id" | cut -f2 -d"=")"
+
+
+###############
+# Start Content
+
+echo '<div class="row"><div class="col s12">'
+
+  echo '<table>
+          <tbody>
+            <tr>
+              <td style="padding-left:20px">'$"Kernel em uso:"'</td>
+              <td class="left-align col s6"><b>'  " $(uname -r)" '</b></td>
+            </tr>
+            <tr>
+            <td style="padding-left:20px">'$"Número de versões de kernel instaladas:" "<b> </b>"'</td>
+              <td class="left-align col s6">' "<b>$(dpkg-query -l '*linux-image-[0-9]*' | grep ^ii  | awk -F ' ' '{print $2}' | wc -l)</b>" '</td>
+            </tr>
+            <tr>
+              <td style="padding-left:20px">'$"Driver de vídeo em uso:" "<b> </b>"'</td>
+              <td class="left-align col s6">' "<b>$(lspci -nnk | grep -i vga -A2 | grep "Kernel driver" | sed 's|.*use:||g') $(grep "Kernel Module" /proc/driver/nvidia/version | sed 's|.*Module  ||g;s|  .*||g')</b>" '</td>
+            </tr>
+          </tbody>
+        </table>'
+
+  echo '<form action="redirect.sh.htm" method="post"><br><br>'
+
+echo '
+    <div class="input-field col s6">
+      <input name="option" type="radio" id="01" value="01" checked/>
+      <label for="01" class="black-text tooltipped" data-position="top" data-delay="50" data-tooltip="Verifique todas as versões instaladas">' $"Visualizar versões de kernel instaladas" '</label>
+    </div>
+    <div class="input-field col s6">
+      <input name="option" type="radio" id="02" value="02" />
+    <label for="02" class="black-text tooltipped" data-position="top" data-delay="50" data-tooltip="Abrir a interface de gerenciamento de drivers">' $"Gerenciador de drivers" '</label>
+    </div>
+    <div class="input-field col s6">
+      <input name="option" type="radio" id="03" value="03" />
+      <label for="03" class="black-text tooltipped" data-position="top" data-delay="50" data-tooltip="As versões Deepin são recomendadas para utilizar neste sistema, pois passam por testes mais prolongados e com isso a possibilidade de instabilidades no sistema é reduzida">' $"Instalar ou remover versões de kernel Deepin" '</label>
+    </div>
+    <div class="input-field col s6">
+
+      <input name="option" type="radio" id="06" value="06" />
+      <label for="06" class="black-text tooltipped" data-position="top" data-delay="50" data-tooltip="Em alguns casos essa opção pode resolver problemas de falha no boot">' $"Atualizar initramfs e grub" '</label>
+    </div>
+    <div class="input-field col s6">
+      <input name="option" type="radio" id="05" value="05" />
+      <label for="05" class="black-text tooltipped" data-position="top" data-delay="50" data-tooltip="O projeto xanmod.org disponbiliza compilações do kernel focadas em desempenho no desktop, caso necessite de uma versão mais atual do kernel, essa é uma boa opção">' $"Instalar ou remover versões de kernel Xanmod" '</label>
+    </div>
+    <div class="input-field col s6">
+      <input name="option" type="radio" id="08" value="08" />
+      <label for="08" class="black-text tooltipped" data-position="top" data-delay="50" data-tooltip="Versões de kernel compiladas para a distribuição Ubuntu possuem boa compatibilidade com esse sistema">' $"Personalizar o gerenciador de boot grub" '</label>
+    </div>
+    <div class="input-field col s6">
+      <input name="option" type="radio" id="07" value="07" />
+      <label for="07" class="black-text tooltipped" data-position="top" data-delay="50" data-tooltip="Versões de kernel compiladas para a distribuição Ubuntu possuem boa compatibilidade com esse sistema">' $"Instalar ou remover versões de kernel Ubuntu" '</label>
+    </div>
+
+
+</div></div>'
+
+
+###################
+# Close content div
+echo '</div>'
+
+
+
+##############
+# Start footer
+echo '<div id="bcc_footer">'
+  echo '<a class="waves-effect waves-light btn blue-grey lighten-1"><img src=help.png>'$"Ajuda"'</a>'
+      echo '<div id="bcc_footer_right">'
+        echo '<a href="/usr/share/bigbashview/close.sh" class="waves-effect waves-light btn blue-grey lighten-1"><img src=cancel.png>'$"Cancelar"'</a>'
+        echo '<button class="btn waves-effect waves-light blue-grey lighten-1" type="submit" name="action"><img src=ok.png>'$"Próximo"'</button>'
+      echo '</div>'
+echo '</div>'
+echo '</form>'
+
+
+#########
+# The end
+echo '</body>'

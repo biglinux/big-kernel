@@ -1,0 +1,11 @@
+Package: big-kernel
+Version: 1.0.0-1big1
+Depends: bigbashview, xterm, grub-customizer, curl, wget, xanmod-repository
+Architecture: all
+Maintainer: Bruno Goncalves <www.biglinux.com.br>
+Section: admin
+Priority: optional
+Installed-Size:380
+Description: Interface to install and remove kernel from Deepin Xanmod and Ubuntu
+
+

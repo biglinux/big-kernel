@@ -1,0 +1,120 @@
+#!/bin/bash
+
+export TEXTDOMAINDIR="/usr/share/locale"
+export TEXTDOMAIN=bigkernel
+
+# Import BigControlCenter base modules / Importa os módulos básicos do BigControlCenter
+# That's include jquery and materialize / Isso inclui o jquery e o materialize
+# http://materializecss.com/
+. /usr/share/bigbashview/bcc/shell/base.sh
+
+
+#Title/Description variables
+bcc_title="Instalador/Removedor de Kernel"
+bcc_description=$"Caso não saiba o que está fazendo, peça ajuda no fórum BigLinux."
+# To disable logo use: bcc_logo="no"
+bcc_logo="logo.png"
+
+# About variables
+# To disable about use: bcc_about="no"
+bcc_about="yes"
+bcc_about_license=$"GPL v2 or greater"
+bcc_about_by=$"Bruno Gonçalves"
+bcc_about_release_date=$"15/07/2017"
+bcc_about_url_code=$"https://github.com/biglinux/bigkernel"
+bcc_about_url_project=$"https://www.biglinux.com.br"
+
+# Print header in screen
+bcc_header
+
+# Import tweaks for theme
+echo '<link rel="stylesheet" type="text/css" href="theme.css">'
+
+
+id="$p_id"
+name="$p_name"
+option="$p_option"
+
+################
+# End of create new remaster folder
+################
+
+
+
+
+
+###############
+# Start Content
+
+echo '<style>
+tbody {
+    display:block;
+    overflow:auto;
+}
+
+[type="checkbox"]:checked {
+
+display: none;
+}
+</style>'
+
+
+echo '<div class="row"><div class="col s12">'
+
+echo '<table>
+
+        <tbody style="height:300px;">'
+
+OLDIFS=$IFS
+IFS=$'\n'
+
+
+IFS=$OLDIFS
+
+windowID="$(xprop -root '\t$0' _NET_ACTIVE_WINDOW | cut -f 2)"
+
+xterm -e "/usr/share/bigbashview/bcc/apps/bigkernel/installKernelUbuntu.sh"
+
+echo "<b>"$"Aplicando as alterações no terminal, ao concluir a instalação o terminal será fechado automaticamente." "</b><p>"
+
+
+installedList="$(dpkg-query -l '*linux-image-[0-9]*' | grep ^ii  | awk -F ' ' '{print $2}')"
+install="$(grep " install$" /tmp/bigKernelGuiInstall.txt | sed 's| install$|<br>|g')"
+uninstall="$(grep " uninstall$" /tmp/bigKernelGuiInstall.txt | sed 's| uninstall$|<br>|g')"
+
+
+
+
+echo '</tbody></table>'
+
+echo '<script type="text/javascript">'
+    echo "window.location.href = \"/usr/share/bigbashview/bcc/apps/bigkernel/finish.sh.htm\""
+echo '</script>'
+
+
+echo '
+
+</div></div>'
+
+
+###################
+# Close content div
+echo '</div>'
+
+
+
+##############
+# Start footer
+echo '<div id="bcc_footer">'
+  echo '<a class="waves-effect waves-light btn blue-grey lighten-1"><img src=help.png>'$"Ajuda"'</a>'
+      echo '<div id="bcc_footer_right">'
+        echo '<a href="index.sh.htm" class="waves-effect waves-light btn blue-grey lighten-1"><img src=cancel.png>'$"Voltar"'</a>'
+        echo '<button class="btn waves-effect waves-light blue-grey lighten-1" type="submit" name="action"><img src=ok.png>'$"Confirmar"'</button>'
+      echo '</div>'
+echo '</div>'
+echo '</form>'
+
+
+#########
+# The end
+echo '</body>'
