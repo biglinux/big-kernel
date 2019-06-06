@@ -1,0 +1,76 @@
+#!/bin/bash
+
+export TEXTDOMAINDIR="/usr/share/locale"
+export TEXTDOMAIN=bigkernel
+
+# Import BigControlCenter base modules / Importa os módulos básicos do BigControlCenter
+# That's include jquery and materialize / Isso inclui o jquery e o materialize
+# http://materializecss.com/
+. /usr/share/bigbashview/bcc/shell/base.sh
+
+
+#Title/Description variables
+bcc_title="Instalador/Removedor de Kernel"
+bcc_description=$"Caso não saiba o que está fazendo, peça ajuda no fórum BigLinux."
+# To disable logo use: bcc_logo="no"
+bcc_logo="logo.png"
+
+# About variables
+# To disable about use: bcc_about="no"
+bcc_about="yes"
+bcc_about_license=$"GPL v2 or greater"
+bcc_about_by=$"Bruno Gonçalves"
+bcc_about_release_date=$"15/07/2017"
+bcc_about_url_code=$"https://github.com/biglinux/bigkernel"
+bcc_about_url_project=$"https://www.biglinux.com.br"
+
+# Print header in screen
+bcc_header
+
+# Import tweaks for theme
+echo '<link rel="stylesheet" type="text/css" href="theme.css">'
+
+
+################
+# End of create new remaster folder
+################
+
+
+
+
+
+###############
+# Start Content
+
+echo '</div><div>'
+
+
+windowID="$(xprop -root '\t$0' _NET_ACTIVE_WINDOW | cut -f 2)"
+
+#xterm -geometry 110x10 -fa 'Ubuntu Mono' -fs 14 -into $(xprop -root '\t$0' _NET_ACTIVE_WINDOW | cut -f 2) -e "/usr/share/bigbashview/bcc/apps/bigkernel/installKernelUbuntu.sh"
+
+echo "<br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><b>"$"Aplicando as alterações no terminal, ao concluir a instalação o terminal será fechado automaticamente." "</b><p>"
+
+
+
+###################
+# Close content div
+echo '</div>'
+
+
+
+##############
+
+urxvt -fn "xft:Ubuntu Mono:pixelsize=18"  -embed $(xprop -root '\t$0' _NET_ACTIVE_WINDOW | cut -f 2) -e /usr/share/bigbashview/bcc/apps/bigkernel/installKernelUbuntu.sh
+
+echo '<script type="text/javascript">'
+    echo "window.location.href = \"/usr/share/bigbashview/bcc/apps/bigkernel/finish.sh.htm\""
+echo '</script>'
+
+
+
+#########
+# The end
+echo '</body>'
+
+

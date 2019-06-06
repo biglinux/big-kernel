@@ -1,0 +1,141 @@
+#!/bin/bash
+
+export TEXTDOMAINDIR="/usr/share/locale"
+export TEXTDOMAIN=bigkernel
+
+# Import BigControlCenter base modules / Importa os módulos básicos do BigControlCenter
+# That's include jquery and materialize / Isso inclui o jquery e o materialize
+# http://materializecss.com/
+. /usr/share/bigbashview/bcc/shell/base.sh
+
+
+#Title/Description variables
+bcc_title="Instalador/Removedor de Kernel"
+bcc_description=$"Caso não saiba o que está fazendo, peça ajuda no fórum BigLinux."
+# To disable logo use: bcc_logo="no"
+bcc_logo="logo.png"
+
+# About variables
+# To disable about use: bcc_about="no"
+bcc_about="yes"
+bcc_about_license=$"GPL v2 or greater"
+bcc_about_by=$"Bruno Gonçalves"
+bcc_about_release_date=$"15/07/2017"
+bcc_about_url_code=$"https://github.com/biglinux/bigkernel"
+bcc_about_url_project=$"https://www.biglinux.com.br"
+
+# Print header in screen
+bcc_header
+
+# Import tweaks for theme
+echo '<link rel="stylesheet" type="text/css" href="theme.css">'
+
+
+id="$p_id"
+name="$p_name"
+option="$p_option"
+
+################
+# End of create new remaster folder
+################
+
+
+
+
+
+###############
+# Start Content
+
+echo '<style>
+tbody {
+    display:block;
+    overflow:auto;
+}
+
+[type="checkbox"]:checked {
+
+display: none;
+}
+</style>'
+
+
+echo '<div class="row"><div class="col s12">'
+
+echo '<table>
+
+        <tbody style="height:300px;">'
+
+OLDIFS=$IFS
+IFS=$'\n'
+
+rm -f /tmp/bigKernelGuiInstall.txt
+
+for i  in  $(echo "$p_package" | sed 's|;|\n|g'); do
+  echo "$i" >> /tmp/bigKernelGuiInstall.txt
+  echo "$i" | sed 's|image|headers|g;s|-unsigned||g' >> /tmp/bigKernelGuiInstall.txt
+  #if [ "$(echo "$i" | grep "xanmod")" != "" ]; then
+  #  echo "$i" | sed 's|image|firmware-image|g;s|-unsigned||g' >> /tmp/bigKernelGuiInstall.txt
+  #fi
+  # Fix remove header and images from Ubuntu
+  if [ "$(echo "$i" | sed 's|image|headers|g;s|-unsigned||g' | grep -e "generic" -e "lowlatency")" != "" ]; then
+    echo "$i" | sed 's|image|headers|g;s|-unsigned||g' | sed 's|-generic||g;s|-lowlatency||g' >> /tmp/bigKernelGuiInstall.txt
+    echo "$i" | sed 's|image|modules|g;s|-unsigned||g' >> /tmp/bigKernelGuiInstall.txt
+  fi
+  # Fix remove header deepin
+  if [ "$(echo "$i" | sed 's|image|headers|g;s|-unsigned||g' | sed 's|-amd64|-common|g;s|-unsigned||g;s|rt-common|common-rt|g' | grep "header" | grep "deepin")" != "" ]; then
+    echo "$i" | sed 's|image|headers|g;s|-unsigned||g' | sed 's|-amd64|-common|g;s|-unsigned||g;s|rt-common|common-rt|g' >> /tmp/bigKernelGuiInstall.txt
+  fi
+
+done
+IFS=$OLDIFS
+
+echo "<b>"$"Confirme se deseja prosseguir com as alterações a seguir:" "</b><p>"
+
+install="$(grep " install$" /tmp/bigKernelGuiInstall.txt | sed 's| install$|<br>|g')"
+uninstall="$(grep " uninstall$" /tmp/bigKernelGuiInstall.txt | sed 's| uninstall$|<br>|g')"
+
+if [ "$p_package" = "" ]; then
+    echo $"Nenhuma alteração marcada."
+else
+
+    if [ "$install" != "" ]; then
+    echo '<b>' $"Instalar:" '<br><font color=green>' "$install" '</font><p>'
+  fi
+
+  if [ "$uninstall" != "" ]; then
+    echo '<b>' $"Remover:" '<br><font color=red>' "$uninstall" '</font><p>'
+  fi
+
+fi
+
+
+echo '</tbody></table>'
+
+echo '
+
+</div></div>'
+
+
+###################
+# Close content div
+echo '</div>'
+
+
+
+##############
+# Start footer
+echo '<div id="bcc_footer">'
+  echo '<a class="waves-effect waves-light btn blue-grey lighten-1"><img src=help.png>'$"Ajuda"'</a>'
+      echo '<div id="bcc_footer_right">'
+        echo '<a href="index.sh.htm" class="waves-effect waves-light btn blue-grey lighten-1"><img src=cancel.png>'$"Voltar"'</a>'
+        if [ "$p_package" != "" ]; then
+          echo '<a href="wait.sh.htm" class="waves-effect waves-light btn blue-grey lighten-1"><img src=ok.png>'$"Confirmar"'</a>'
+        fi
+      echo '</div>'
+echo '</div>'
+echo '</form>'
+
+
+#########
+# The end
+echo '</body>'
