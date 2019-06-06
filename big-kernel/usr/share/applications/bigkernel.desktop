@@ -2,8 +2,8 @@
 Name=Kernel and boot options
 Name[pt]=Opções de kernel e boot
 Name[pt_BR]=Opções de kernel e boot
-Exec=gksu "bigbashview /usr/share/bigbashview/bcc/apps/bigkernel/index.sh.htm -s 1050x600 -i /usr/share/bigbashview/bcc/apps/bigkernel/dvd.png"
-Icon=application-x-sharedlib
+Exec=bigsudo bigkernel
+Icon=emblem-added
 Type=Application
 StartupNotify=true
-Categories=Development;
+Categories=Settings;

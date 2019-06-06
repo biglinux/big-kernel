@@ -90,7 +90,7 @@ for i  in  $(cat $origin); do
 
   inUse=$"<font color=red> EM USO - "
 
-    if [ "$kversion" = "linux-image-$(uname -r)" ]; then
+    if [ "$kversion" = "linux-image-unsigned-$(uname -r)" ] || [ "$kversion" = "linux-image-$(uname -r)" ]; then
       cat << EOF
         <tr>
         <td style="padding-top:0px; padding-bottom:10px;"><input type="checkbox" name="package" value="$kversion$installed2" id="$kversion" class="filled-in" id="filled-in-box" disabled>

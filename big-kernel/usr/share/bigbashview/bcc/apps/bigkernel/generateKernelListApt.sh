@@ -4,7 +4,7 @@ OLDIFS=$IFS
 IFS=$'\n'
 
 all="$(apt-cache search linux-image | grep -ve 686 -ve 586 -ve dbg -ve nvidia -ve linux-headers -ve meta-package | cut -f1 -d " " | sort -Vr)"
-installed="$(dpkg-query -l '*linux-image-[0-9]*' | grep ^ii  | awk -F ' ' '{print $2}')"
+installed="$(dpkg-query -l '*linux-image-*[0-9].*' | grep ^ii  | awk -F ' ' '{print $2}')"
 
 echo "$all" > /tmp/bigKernelAll
 echo "$installed" > /tmp/bigKernelInstalled
@@ -19,7 +19,7 @@ for i  in $(cat /tmp/bigKernelInstalled); do
 done
 
 # make Kernel Deepin list
-grep deepin /tmp/bigKernelAll > /tmp/bigKernelDeepin
+grep amd64 /tmp/bigKernelAll | grep -v template | grep -v installed-unsigned > /tmp/bigKernelDeepin
 
 
 # Kernel without deepin or ubuntu
@@ -28,7 +28,7 @@ for y in $(cat /tmp/bigKernelDeepin); do
     sed -i "s|^$y$||g" /tmp/bigKernelWithoutDeepin
     sed -i '/^$/d' /tmp/bigKernelWithoutDeepin
 done
-grep -v "generic" /tmp/bigKernelWithoutDeepin | grep -v lowlatency > /tmp/bigKernelWithoutDeepin2
+grep "xanmod" /tmp/bigKernelWithoutDeepin  > /tmp/bigKernelWithoutDeepin2
 rm -f /tmp/bigKernelWithoutDeepin
 mv -f /tmp/bigKernelWithoutDeepin2 /tmp/bigKernelWithoutDeepin
 

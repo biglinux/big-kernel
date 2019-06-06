@@ -49,7 +49,7 @@ echo '<div class="row"><div class="col s12">'
             </tr>
             <tr>
             <td style="padding-left:20px">'$"Número de versões de kernel instaladas:" "<b> </b>"'</td>
-              <td class="left-align col s6">' "<b>$(dpkg-query -l '*linux-image-[0-9]*' | grep ^ii  | awk -F ' ' '{print $2}' | wc -l)</b>" '</td>
+              <td class="left-align col s6">' "<b>$(dpkg-query -l '*linux-image-*[0-9]*' | grep -v linux-image-amd64 | grep ^ii  | awk -F ' ' '{print $2}' | wc -l)</b>" '</td>
             </tr>
             <tr>
               <td style="padding-left:20px">'$"Driver de vídeo em uso:" "<b> </b>"'</td>
@@ -71,7 +71,7 @@ echo '
     </div>
     <div class="input-field col s6">
       <input name="option" type="radio" id="03" value="03" />
-      <label for="03" class="black-text tooltipped" data-position="top" data-delay="50" data-tooltip="As versões Deepin são recomendadas para utilizar neste sistema, pois passam por testes mais prolongados e com isso a possibilidade de instabilidades no sistema é reduzida">' $"Instalar ou remover versões de kernel Deepin" '</label>
+      <label for="03" class="black-text tooltipped" data-position="top" data-delay="50" data-tooltip="As versões Debian são recomendadas para utilizar neste sistema, pois passam por testes mais prolongados e com isso a possibilidade de instabilidades no sistema é reduzida">' $"Instalar ou remover versões de kernel Debian" '</label>
     </div>
     <div class="input-field col s6">
 

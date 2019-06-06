@@ -1,0 +1,3 @@
+#!/bin/bash
+xhost +
+bigbashview /usr/share/bigbashview/bcc/apps/bigkernel/index.sh.htm -s 1050x600 -i /usr/share/bigbashview/bcc/apps/bigkernel/dvd.png

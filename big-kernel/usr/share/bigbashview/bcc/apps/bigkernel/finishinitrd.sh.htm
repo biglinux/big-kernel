@@ -72,9 +72,9 @@ IFS=$'\n'
 
   echo '<br><br><br><b>' $"Arquivos initrd gerados e configuração do grub atualizada!" '</b>'
 
-xterm -e "update-initramfs -u -k all"
-xterm -e "update-initramfs -c -k all"
-xterm -e "update-grub"
+
+xterm -geometry 110x20+0+900 -fa 'Ubuntu Mono' -fs 14 -into $(xprop -root '\t$0' _NET_ACTIVE_WINDOW | cut -f 2) -e "update-initramfs -c -k all"
+xterm -geometry 110x20+0+900 -fa 'Ubuntu Mono' -fs 14 -into $(xprop -root '\t$0' _NET_ACTIVE_WINDOW | cut -f 2) -e "update-grub"
 
 
 echo '</tbody></table>'

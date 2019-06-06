@@ -89,7 +89,7 @@ done
 
 if [ "$ubuntu" = "s" ]; then
     echo "Lista de todas as versões de kernel Ubuntu instaladas:" '<br>'
-    for x  in  $(dpkg-query -l '*linux-image-[0-9]*' | grep ^ii  | awk -F ' ' '{print $2}' | grep -e "generic" -e "lowlatency"); do
+    for x  in  $(dpkg-query -l '*linux-image-*[0-9]*' | grep ^ii  | awk -F ' ' '{print $2}' | grep -e "generic" -e "lowlatency"); do
       echo '<br>' "$x"
     done
 fi

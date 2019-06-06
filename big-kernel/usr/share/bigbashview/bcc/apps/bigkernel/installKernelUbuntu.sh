@@ -1,5 +1,7 @@
 #!/bin/bash
 
+xtermset -geom 100x15+30+110
+
 OLDIFS=$IFS
 IFS=$'\n'
 
@@ -11,14 +13,16 @@ cd /tmp/installKernelUbuntu
 for x  in  $(grep " install$" /tmp/bigKernelGuiInstall.txt | sed 's| install||g'); do
 
   if [ "$(echo "$x" | grep generic)" != "" ]; then
-    for i  in  $(curl http://kernel.ubuntu.com/~kernel-ppa/mainline/$(echo "$x" | sed 's|-generic||g;s|-lowlatency||g')/ | grep "amd64\|all" | sed 's|.*href="||g;s|">.*||g' | grep "_all\|-generic" | sort | uniq); do
+    for i  in  $(curl https://kernel.ubuntu.com/~kernel-ppa/mainline/$(echo "$x" | sed 's|-generic||g;s|-lowlatency||g')/ | grep "amd64\|all" | sed 's|.*href="||g;s|">.*||g' | grep "_all\|-generic" | sort | uniq); do
         wget "http://kernel.ubuntu.com/~kernel-ppa/mainline/$(echo "$x" | sed 's|-generic||g;s|-lowlatency||g')/$i"
     done
   else
-    for i  in  $(curl http://kernel.ubuntu.com/~kernel-ppa/mainline/$(echo "$x" | sed 's|-generic||g;s|-lowlatency||g')/ | grep "amd64\|all" | sed 's|.*href="||g;s|">.*||g' | grep "_all\|-lowlatency" | sort | uniq); do
+    for i  in  $(curl https://kernel.ubuntu.com/~kernel-ppa/mainline/$(echo "$x" | sed 's|-generic||g;s|-lowlatency||g')/ | grep "amd64\|all" | sed 's|.*href="||g;s|">.*||g' | grep "_all\|-lowlatency" | sort | uniq); do
         wget "http://kernel.ubuntu.com/~kernel-ppa/mainline/$(echo "$x" | sed 's|-generic||g;s|-lowlatency||g')/$i"
     done
   fi
+
+  
 
 done
 

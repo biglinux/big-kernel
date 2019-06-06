@@ -73,12 +73,13 @@ rm -f /tmp/bigKernelGuiInstall.txt
 for i  in  $(echo "$p_package" | sed 's|;|\n|g'); do
   echo "$i" >> /tmp/bigKernelGuiInstall.txt
   echo "$i" | sed 's|image|headers|g;s|-unsigned||g' >> /tmp/bigKernelGuiInstall.txt
-  if [ "$(echo "$i" | grep "xanmod")" != "" ]; then
-    echo "$i" | sed 's|image|firmware-image|g;s|-unsigned||g' >> /tmp/bigKernelGuiInstall.txt
-  fi
-  # Fix remove header Ubuntu
+  #if [ "$(echo "$i" | grep "xanmod")" != "" ]; then
+  #  echo "$i" | sed 's|image|firmware-image|g;s|-unsigned||g' >> /tmp/bigKernelGuiInstall.txt
+  #fi
+  # Fix remove header and images from Ubuntu
   if [ "$(echo "$i" | sed 's|image|headers|g;s|-unsigned||g' | grep -e "generic" -e "lowlatency")" != "" ]; then
     echo "$i" | sed 's|image|headers|g;s|-unsigned||g' | sed 's|-generic||g;s|-lowlatency||g' >> /tmp/bigKernelGuiInstall.txt
+    echo "$i" | sed 's|image|modules|g;s|-unsigned||g' >> /tmp/bigKernelGuiInstall.txt
   fi
   # Fix remove header deepin
   if [ "$(echo "$i" | sed 's|image|headers|g;s|-unsigned||g' | sed 's|-amd64|-common|g;s|-unsigned||g;s|rt-common|common-rt|g' | grep "header" | grep "deepin")" != "" ]; then
