@@ -12,6 +12,12 @@ cd /tmp/installKernelUbuntu
 
 for x  in  $(grep " install$" /tmp/bigKernelGuiInstall.txt | sed 's| install||g'); do
 
+if [ "$(curl https://kernel.ubuntu.com/~kernel-ppa/mainline/$(echo "$x" | sed 's|-generic||g;s|-lowlatency||g')/ | grep -i "Build for amd64 failed")" != "" ]; then
+
+    kdialog --msgbox $"Esta versão de kernel não está disponível para download, tente outra versão." --title "Kernel"
+
+else
+
   if [ "$(echo "$x" | grep generic)" != "" ]; then
     for i  in  $(curl https://kernel.ubuntu.com/~kernel-ppa/mainline/$(echo "$x" | sed 's|-generic||g;s|-lowlatency||g')/ | grep "amd64\|all" | sed 's|.*href="||g;s|">.*||g' | grep "_all\|-generic" | sort | uniq); do
         wget "http://kernel.ubuntu.com/~kernel-ppa/mainline/$(echo "$x" | sed 's|-generic||g;s|-lowlatency||g')/$i"
@@ -22,7 +28,7 @@ for x  in  $(grep " install$" /tmp/bigKernelGuiInstall.txt | sed 's| install||g'
     done
   fi
 
-  
+fi
 
 done
 

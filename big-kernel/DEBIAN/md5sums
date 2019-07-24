@@ -1,5 +1,6 @@
+3b6b241ee1e0db4bd2cc96728ffa4f1e  DEBIAN/control
 d41d8cd98f00b204e9800998ecf8427e  DEBIAN/md5sums
-6fb37a96f1dc034b5a98951ff6f6301d  DEBIAN/control
+7c2d747c6d3fb986b1621a39373a2c15  usr/bin/bigkernel
 29364bfeb792a53ddb8cb0a1a5944839  usr/share/applications/bigkernel.desktop
 a0ec3b52c75722dfd3ddd2c0fcdd184a  usr/share/bigbashview/bcc/apps/bigkernel/bg.jpg
 4f7d55e235f4a7b6438ac1f4dca16bd3  usr/share/bigbashview/bcc/apps/bigkernel/cancel.png
@@ -11,7 +12,7 @@ c8890717aca0fe025d56d59d6e7361be  usr/share/bigbashview/bcc/apps/bigkernel/gener
 0ee0687e7acbb07aa8eca86927163d95  usr/share/bigbashview/bcc/apps/bigkernel/generateKernelUbuntList.sh
 4063da122dae88a8b9c17e5e73553879  usr/share/bigbashview/bcc/apps/bigkernel/help.png
 238836f71794f90635c9b9578bd69868  usr/share/bigbashview/bcc/apps/bigkernel/index.sh.htm
-40266ab0d5db59856e45b1b8425cd54c  usr/share/bigbashview/bcc/apps/bigkernel/installKernelUbuntu.sh
+0018c7446d94a6ce7370c0b883b78b08  usr/share/bigbashview/bcc/apps/bigkernel/installKernelUbuntu.sh
 78448b4927620873bb026a05b27fb5c2  usr/share/bigbashview/bcc/apps/bigkernel/kernel.sh.htm
 834a00fcecbfddf444b0d4627645651b  usr/share/bigbashview/bcc/apps/bigkernel/kernelList.sh.htm
 2df978f8504f242a40e8fa22fc7325d1  usr/share/bigbashview/bcc/apps/bigkernel/kernelUbuntu.sh.htm
@@ -22,7 +23,6 @@ e3e712327b12414b2e9bf542a6a7ca83  usr/share/bigbashview/bcc/apps/bigkernel/run.r
 92a83c70a8d5f378fc2ab06066f90e22  usr/share/bigbashview/bcc/apps/bigkernel/theme.css
 58e8e4cd3c3692fd381b5c01359b209a  usr/share/bigbashview/bcc/apps/bigkernel/wait.sh.htm
 4793f62c1a855d6a9d43d827e4c24e03  usr/share/bigbashview/bcc/apps/bigkernel/wait2.sh.htm
-1b717e0dbcf21c4711a06d280687725d  usr/share/bigbashview/bcc/apps/bigkernel/wait2Ubuntu.sh.htm
-ad2237ae884c6b3c4f2fc1974c61db13  usr/share/bigbashview/bcc/apps/bigkernel/waitUbuntu.sh.htm
+128fa4e53d37063f6fedfed06825bcf6  usr/share/bigbashview/bcc/apps/bigkernel/wait2Ubuntu.sh.htm
 066280df2c7c70e4f64e8580c8aede75  usr/share/bigbashview/bcc/apps/bigkernel/waitinitrd.sh.htm
-7c2d747c6d3fb986b1621a39373a2c15  usr/bin/bigkernel
+ad2237ae884c6b3c4f2fc1974c61db13  usr/share/bigbashview/bcc/apps/bigkernel/waitUbuntu.sh.htm

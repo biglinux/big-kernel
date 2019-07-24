@@ -19,7 +19,7 @@ for i  in $(cat /tmp/bigKernelInstalled); do
 done
 
 # make Kernel Deepin list
-grep amd64 /tmp/bigKernelAll | grep -v template | grep -v installed-unsigned > /tmp/bigKernelDeepin
+grep -e generic -e lowlatency /tmp/bigKernelAll | grep -v template | grep -v unsigned | grep [0-9] > /tmp/bigKernelDeepin
 
 
 # Kernel without deepin or ubuntu

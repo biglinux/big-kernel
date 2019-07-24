@@ -84,7 +84,7 @@ if [ "$p_option" = "01" ]; then
 fi
 
 if [ "$p_option" = "02" ]; then
-mintdrivers 2>/dev/null >/dev/null &
+kcmshell5 kcm_driver_manager 2>/dev/null >/dev/null &
     echo "window.location.href = \"/usr/share/bigbashview/bcc/apps/bigkernel/index.sh.htm\""
 fi
 
