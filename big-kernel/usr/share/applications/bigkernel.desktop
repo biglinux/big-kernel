@@ -1,9 +1,9 @@
 [Desktop Entry]
-Name=Kernel and boot options
-Name[pt]=Opções de kernel e boot
-Name[pt_BR]=Opções de kernel e boot
+Name=Drivers, Kernel and boot options
+Name[pt]=Opções de driver, kernel e boot
+Name[pt_BR]=Opções de driver, kernel e boot
 Exec=bigsudo bigkernel
-Icon=emblem-added
+Icon=cpu
 Type=Application
 StartupNotify=true
 Categories=Settings;
