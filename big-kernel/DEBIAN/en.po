@@ -1,0 +1,252 @@
+# Portuguese translations for big-kernel package.
+# Copyright (C) 2019 THE big-kernel'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the big-kernel package.
+# Automatically generated, 2019.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: big-kernel\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2019-08-19 04:38-0300\n"
+"PO-Revision-Date: 2019-08-19 04:41-0300\n"
+"Last-Translator: Automatically generated\n"
+"Language-Team: none\n"
+"Language: en\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Generator: Poedit 2.2.1\n"
+
+msgid "Instalador/Removedor de Kernel"
+msgstr "Kernel Installer/Remover"
+
+msgid "Caso não saiba o que está fazendo, peça ajuda no fórum BigLinux."
+msgstr ""
+"If you don't know what you're doing, ask for help on the BigLinux forum."
+
+msgid "GPL v2 or greater"
+msgstr ""
+
+msgid "Bruno Gonçalves"
+msgstr ""
+
+msgid "15/07/2017"
+msgstr ""
+
+msgid "https://github.com/biglinux/bigkernel"
+msgstr ""
+
+msgid "https://www.biglinux.com.br"
+msgstr ""
+
+msgid "Confirme se deseja prosseguir com as alterações a seguir:"
+msgstr "Confirm that you want to proceed with the following changes:"
+
+msgid "Nenhuma alteração marcada."
+msgstr "No changes marked."
+
+msgid "Instalar:"
+msgstr "Install:"
+
+msgid "Remover:"
+msgstr "To remove:"
+
+msgid "Voltar"
+msgstr "Back"
+
+msgid "Confirmar"
+msgstr "Confirm"
+
+msgid "Falha na INSTALAÇÃO do kernel: $i"
+msgstr "Kernel INSTALLATION failed: $i"
+
+msgid "Falha na REMOÇÃO do kernel: $i"
+msgstr "Kernel REMOVAL failed: $i"
+
+msgid "Alterações aplicadas!"
+msgstr "Changes applied!"
+
+msgid "Fechar"
+msgstr "Close"
+
+msgid "Arquivos initrd gerados e configuração do grub atualizada!"
+msgstr "Generated initrd files and updated grub configuration!"
+
+msgid "Boot, Kernel, Grub, Initrd e Drivers"
+msgstr "Boot, Kernel, Grub, Initrd and Drivers"
+
+msgid "Kernel em uso:"
+msgstr "Kernel in use:"
+
+msgid "Número de versões de kernel instaladas:"
+msgstr "Number of kernel versions installed:"
+
+msgid "Driver de vídeo em uso:"
+msgstr "Video driver in use:"
+
+msgid "Verifique todas as versões instaladas"
+msgstr "View installed kernel versions"
+
+msgid "Visualizar versões de kernel instaladas"
+msgstr "View installed kernel versions"
+
+msgid "Abrir a interface de gerenciamento de drivers"
+msgstr "Open the driver management interface"
+
+msgid "Gerenciador de drivers (Melhorar o suporte a hardware)"
+msgstr "Driver Manager (Improve Hardware Support)"
+
+msgid ""
+"As versões Ubuntu são recomendadas para utilizar neste sistema, pois passam "
+"por testes mais prolongados e com isso a possibilidade de instabilidades no "
+"sistema é reduzida."
+msgstr ""
+"Ubuntu versions are recommended for use on this system as they undergo "
+"longer testing and thus the possibility of system instabilities is reduced."
+
+msgid "Instalar ou remover versões de kernel Ubuntu"
+msgstr "Install or remove Ubuntu kernel versions"
+
+msgid "Em alguns casos essa opção pode resolver problemas de falha no boot"
+msgstr "In some cases this option may resolve boot failure issues."
+
+msgid "Atualizar initramfs e grub"
+msgstr "Update initramfs and grub"
+
+msgid ""
+"O projeto xanmod.org disponbiliza compilações do kernel focadas em "
+"desempenho no desktop, caso necessite de uma versão mais atual do kernel, "
+"essa é uma boa opção."
+msgstr ""
+"The xanmod.org project provides performance-focused kernel builds on the "
+"desktop, so if you need a more current kernel version, this is a good option."
+
+msgid "Instalar ou remover versões de kernel Xanmod"
+msgstr "Install or remove Xanmod kernel versions"
+
+msgid ""
+"Versões de kernel compiladas para a distribuição Ubuntu possuem boa "
+"compatibilidade com esse sistema"
+msgstr ""
+"Kernel versions compiled for the Ubuntu distribution have good compatibility "
+"with this system."
+
+msgid "Personalizar o gerenciador de boot grub"
+msgstr "Customize the grub boot manager"
+
+msgid ""
+"Utilize essa opção apenas se necessitar de alguma versão específica de "
+"kernel, pois aqui está disponível uma grande quantidade de versões."
+msgstr ""
+"Use this option only if you require a specific kernel version, as a large "
+"number of versions are available here."
+
+msgid "Instalar ou remover versões de teste do kernel Ubuntu"
+msgstr "Install or remove trial versions of the Ubuntu kernel"
+
+msgid "Cancelar"
+msgstr "Cancel"
+
+msgid "Próximo"
+msgstr "Next"
+
+msgid ""
+"Esta versão de kernel não está disponível para download, tente outra versão."
+msgstr ""
+"This kernel version is not available for download, try another version."
+
+msgid "Instalar ou remover os pacotes conforme o que você selecionou no painel"
+msgstr "Install or remove packages according to what you selected in the panel"
+
+msgid "Volta para a página anterior"
+msgstr "Return to previous page"
+
+msgid ""
+"Marque os pacotes instalados para remove-los ou marque os pacotes não "
+"instalados, para instalar:"
+msgstr ""
+"Check installed packages to remove them or check not installed packages to "
+"install:"
+
+msgid "<font color=green> INSTALADO - "
+msgstr "<font color=green> INSTALLED -"
+
+msgid "NÂO instalado - "
+msgstr "Not installed -"
+
+msgid "<font color=red> EM USO - "
+msgstr "<font color=red> IN USE -"
+
+msgid "Instalar/Remover"
+msgstr "Install/Remove"
+
+msgid "Marque os pacotes instalados para remove-los:"
+msgstr "Check installed packages to remove them:"
+
+msgid ""
+"Atenção, as versões de kernel dessa categoria, após instaladas, possuem "
+"nomes com grande quantidade de números, diferente da lista de versões "
+"disponíveis para instalação, portanto, continuará aparecendo na lista de não "
+"instalados."
+msgstr ""
+"Attention, kernel versions of this category, once installed, have names with "
+"large numbers of numbers, unlike the list of versions available for "
+"installation, so will continue to appear in the list of not installed."
+
+msgid "<font color=green>INSTALADO -"
+msgstr "<font color=green> INSTALLED -"
+
+msgid "Carregando..."
+msgstr "Loading..."
+
+msgid "Tradução de arquivos de shell script gerados!"
+msgstr "Translation of generated shell script files!"
+
+msgid ""
+"Insira as siglas das línguas que deseja que sejam gerados\n"
+"    os arquivos para tradução no arquivo que irei abrir,\n"
+"    por exemplo, para português, espanhol e inglês:\n"
+"\n"
+"\n"
+"pt\n"
+"es\n"
+"en"
+msgstr ""
+
+msgid ""
+"\n"
+"    Insira o endereço completo dos arquivos que\n"
+"    deseja que sejam substituídos e pertencem\n"
+"    também a outros pacotes, por exemplo:\n"
+"\n"
+"/usr/bin/firefox\n"
+"/usr/bin/gedit"
+msgstr ""
+
+msgid ""
+"Já existem os arquivos preinst e postrm para esse pacote, deseja "
+"sobrescrever?"
+msgstr ""
+
+msgid "Sim"
+msgstr "Yes"
+
+msgid "Não"
+msgstr "No"
+
+msgid "Arquivos gerados!"
+msgstr "Generated files!"
+
+msgid "Aplicando as alterações..."
+msgstr "Applying changes..."
+
+msgid "Aplicando as alterações no terminal, aguarde."
+msgstr "Applying changes to the terminal, please wait."
+
+msgid ""
+"Aplicando as alterações no terminal, ao concluir a instalação o terminal "
+"será fechado automaticamente."
+msgstr ""
+"Applying changes to the terminal, upon completion of the installation the "
+"terminal will be closed automatically."

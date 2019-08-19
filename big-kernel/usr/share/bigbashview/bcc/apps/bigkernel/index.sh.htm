@@ -1,7 +1,7 @@
 #!/bin/bash
 
 export TEXTDOMAINDIR="/usr/share/locale"
-export TEXTDOMAIN=bigkernel
+export TEXTDOMAIN=big-kernel
 
 # Import BigControlCenter base modules / Importa os módulos básicos do BigControlCenter
 # That's include jquery and materialize / Isso inclui o jquery e o materialize
@@ -10,7 +10,7 @@ export TEXTDOMAIN=bigkernel
 
 
 #Title/Description variables
-bcc_title="Boot, Kernel, Grub, Initrd e Drivers"
+bcc_title=$"Boot, Kernel, Grub, Initrd e Drivers"
 bcc_description=$"Caso não saiba o que está fazendo, peça ajuda no fórum BigLinux."
 # To disable logo use: bcc_logo="no"
 bcc_logo="logo.png"
@@ -63,32 +63,32 @@ echo '<div class="row"><div class="col s12">'
 echo '
     <div class="input-field col s6">
       <input name="option" type="radio" id="01" value="01" checked/>
-      <label for="01" class="black-text tooltipped" data-position="top" data-delay="50" data-tooltip="Verifique todas as versões instaladas">' $"Visualizar versões de kernel instaladas" '</label>
+      <label for="01" class="black-text tooltipped" data-position="top" data-delay="50" data-tooltip="' $"Verifique todas as versões instaladas" '">' $"Visualizar versões de kernel instaladas" '</label>
     </div>
     <div class="input-field col s6">
       <input name="option" type="radio" id="02" value="02" />
-    <label for="02" class="black-text tooltipped" data-position="top" data-delay="50" data-tooltip="Abrir a interface de gerenciamento de drivers">' $"Gerenciador de drivers (Melhorar o suporte a hardware)" '</label>
+    <label for="02" class="black-text tooltipped" data-position="top" data-delay="50" data-tooltip="' $"Abrir a interface de gerenciamento de drivers" '">' $"Gerenciador de drivers (Melhorar o suporte a hardware)" '</label>
     </div>
     <div class="input-field col s6">
       <input name="option" type="radio" id="03" value="03" />
-      <label for="03" class="black-text tooltipped" data-position="top" data-delay="50" data-tooltip="As versões Ubuntu são recomendadas para utilizar neste sistema, pois passam por testes mais prolongados e com isso a possibilidade de instabilidades no sistema é reduzida.">' $"Instalar ou remover versões de kernel Ubuntu" '</label>
+      <label for="03" class="black-text tooltipped" data-position="top" data-delay="50" data-tooltip="' $"As versões Ubuntu são recomendadas para utilizar neste sistema, pois passam por testes mais prolongados e com isso a possibilidade de instabilidades no sistema é reduzida." '">' $"Instalar ou remover versões de kernel Ubuntu" '</label>
     </div>
     <div class="input-field col s6">
 
       <input name="option" type="radio" id="06" value="06" />
-      <label for="06" class="black-text tooltipped" data-position="top" data-delay="50" data-tooltip="Em alguns casos essa opção pode resolver problemas de falha no boot">' $"Atualizar initramfs e grub" '</label>
+      <label for="06" class="black-text tooltipped" data-position="top" data-delay="50" data-tooltip="' $"Em alguns casos essa opção pode resolver problemas de falha no boot" '">' $"Atualizar initramfs e grub" '</label>
     </div>
     <div class="input-field col s6">
       <input name="option" type="radio" id="05" value="05" />
-      <label for="05" class="black-text tooltipped" data-position="top" data-delay="50" data-tooltip="O projeto xanmod.org disponbiliza compilações do kernel focadas em desempenho no desktop, caso necessite de uma versão mais atual do kernel, essa é uma boa opção.">' $"Instalar ou remover versões de kernel Xanmod" '</label>
+      <label for="05" class="black-text tooltipped" data-position="top" data-delay="50" data-tooltip="' $"O projeto xanmod.org disponbiliza compilações do kernel focadas em desempenho no desktop, caso necessite de uma versão mais atual do kernel, essa é uma boa opção." '">' $"Instalar ou remover versões de kernel Xanmod" '</label>
     </div>
     <div class="input-field col s6">
       <input name="option" type="radio" id="08" value="08" />
-      <label for="08" class="black-text tooltipped" data-position="top" data-delay="50" data-tooltip="Versões de kernel compiladas para a distribuição Ubuntu possuem boa compatibilidade com esse sistema">' $"Personalizar o gerenciador de boot grub" '</label>
+      <label for="08" class="black-text tooltipped" data-position="top" data-delay="50" data-tooltip="' $"Versões de kernel compiladas para a distribuição Ubuntu possuem boa compatibilidade com esse sistema" '">' $"Personalizar o gerenciador de boot grub" '</label>
     </div>
     <div class="input-field col s6">
       <input name="option" type="radio" id="07" value="07" />
-      <label for="07" class="black-text tooltipped" data-position="top" data-delay="50" data-tooltip="Utilize essa opção apenas se necessitar de alguma versão específica de kernel, pois aqui está disponível uma grande quantidade de versões.">' $"Instalar ou remover versões de teste do kernel Ubuntu" '</label>
+      <label for="07" class="black-text tooltipped" data-position="top" data-delay="50" data-tooltip="' $"Utilize essa opção apenas se necessitar de alguma versão específica de kernel, pois aqui está disponível uma grande quantidade de versões." '">' $"Instalar ou remover versões de teste do kernel Ubuntu" '</label>
     </div>
 
 
