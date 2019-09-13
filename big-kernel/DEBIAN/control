@@ -1,6 +1,6 @@
 Package: big-kernel
-Version: 1.0.1-1big5
-Depends: bigbashview, grub-customizer, curl, wget, xanmod-repository, rxvt-unicode, xtermset
+Version: 1.0.1-1big6
+Depends: bigbashview, grub-customizer, curl, wget, xanmod-repository, rxvt-unicode, xtermset, software-properties-gtk
 Architecture: all
 Maintainer: Bruno Goncalves <www.biglinux.com.br>
 Section: admin

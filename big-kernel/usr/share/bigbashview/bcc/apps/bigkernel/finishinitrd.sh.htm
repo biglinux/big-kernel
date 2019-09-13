@@ -72,9 +72,7 @@ IFS=$'\n'
 
   echo '<br><br><br><b>' $"Arquivos initrd gerados e configuração do grub atualizada!" '</b>'
 
-
-xterm -geometry 110x20+0+900 -fa 'Ubuntu Mono' -fs 14 -into $(xprop -root '\t$0' _NET_ACTIVE_WINDOW | cut -f 2) -e "update-initramfs -c -k all"
-xterm -geometry 110x20+0+900 -fa 'Ubuntu Mono' -fs 14 -into $(xprop -root '\t$0' _NET_ACTIVE_WINDOW | cut -f 2) -e "update-grub"
+urxvt +sb -fn "xft:Ubuntu Mono:pixelsize=18"  -embed $(xprop -root '\t$0' _NET_ACTIVE_WINDOW | cut -f 2) -e /usr/share/bigbashview/bcc/apps/bigkernel/initrd.sh
 
 
 echo '</tbody></table>'
