@@ -4,7 +4,7 @@ export TEXTDOMAINDIR="/usr/share/locale"
 export TEXTDOMAIN=big-kernel
 
 # Don't group windows
-xprop -id "$(xprop -root '\t$0' _NET_ACTIVE_WINDOW | cut -f 2)" -f WM_CLASS 8s -set WM_CLASS "$$"
+xprop -id "$(xprop -root '\t$0' _NET_ACTIVE_WINDOW | cut -f 2)" -f WM_CLASS $$ -set WM_CLASS "$$"
 
 
 # Import BigControlCenter base modules / Importa os módulos básicos do BigControlCenter
