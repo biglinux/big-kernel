@@ -5,7 +5,7 @@ Architecture: all
 Maintainer: Bruno Goncalves <www.biglinux.com.br>
 Section: admin
 Priority: optional
-Installed-Size:412
+Installed-Size:416
 Description: Interface to install and remove kernel from Deepin Xanmod and Ubuntu
 
 
