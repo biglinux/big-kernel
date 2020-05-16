@@ -7,7 +7,7 @@
 msgid   ""
 msgstr  "Project-Id-Version: big-kernel\n"
         "Report-Msgid-Bugs-To: \n"
-        "POT-Creation-Date: 2019-08-19 04:38-0300\n"
+        "POT-Creation-Date: 2020-05-16 19:58-0300\n"
         "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
         "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
         "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -217,9 +217,9 @@ msgstr  ""
 msgid   "Aplicando as alterações..."
 msgstr  ""
 
-msgid   "Aplicando as alterações no terminal, aguarde."
-msgstr  ""
-
 msgid   "Aplicando as alterações no terminal, ao concluir a instalação o "
         "terminal será fechado automaticamente."
+msgstr  ""
+
+msgid   "Aplicando as alterações no terminal, aguarde."
 msgstr  ""
