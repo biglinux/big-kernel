@@ -52,8 +52,8 @@ display: none;
 
 
 
-tooltip_install_remove=$"Instalar ou remover os pacotes conforme o que você selecionou no painel"
-tooltip_back=$"Volta para a página anterior"
+tooltiinstall_remove=$"Instalar ou remover os pacotes conforme o que você selecionou no painel"
+tooltiback=$"Volta para a página anterior"
 
 ###############
 # Start Content
@@ -122,8 +122,8 @@ echo '</div>'
 # Start footer
 echo '<div id="bcc_footer">'
       echo '<div id="bcc_footer_right">'
-        echo '<a href="index.sh.htm" class="waves-effect waves-light btn blue-grey lighten-1 tooltipped" data-position="top" data-delay="50" data-tooltip="'"$tooltip_back"'"><img src=ok.png>'$"Voltar"'</a>'
-        echo '<button class="btn waves-effect waves-light blue-grey lighten-1 tooltipped" data-position="top" data-delay="50" data-tooltip="'"$tooltip_install_remove"'" type="submit" name="action"><img src=ok.png>'$"Instalar/Remover"'</button>'
+        echo '<a href="index.sh.htm" class="waves-effect waves-light btn blue-grey lighten-1 tooltipped" data-position="top" data-delay="50" data-tooltip="'"$tooltiback"'"><img src=ok.png>'$"Voltar"'</a>'
+        echo '<button class="btn waves-effect waves-light blue-grey lighten-1 tooltipped" data-position="top" data-delay="50" data-tooltip="'"$tooltiinstall_remove"'" type="submit" name="action"><img src=ok.png>'$"Instalar/Remover"'</button>'
       echo '</div>'
 echo '</div>'
 echo '</form>'

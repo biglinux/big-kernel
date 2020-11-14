@@ -31,9 +31,9 @@ bcc_header
 echo '<link rel="stylesheet" type="text/css" href="theme.css">'
 
 
-id="$p_id"
-name="$p_name"
-option="$p_option"
+id="$id"
+name="$name"
+option="$option"
 
 ################
 # End of create new remaster folder
@@ -70,7 +70,7 @@ IFS=$'\n'
 
 rm -f /tmp/bigKernelGuiInstall.txt
 
-for i  in  $(echo "$p_package" | sed 's|;|\n|g'); do
+for i  in  $(echo "$package" | sed 's|;|\n|g'); do
   echo "$i" >> /tmp/bigKernelGuiInstall.txt
   echo "$i" | sed 's|image|headers|g;s|-unsigned||g' >> /tmp/bigKernelGuiInstall.txt
 
@@ -98,7 +98,7 @@ echo "<b>"$"Confirme se deseja prosseguir com as alterações a seguir:" "</b><p
 install="$(grep " install$" /tmp/bigKernelGuiInstall.txt | sed 's| install$|<br>|g')"
 uninstall="$(grep " uninstall$" /tmp/bigKernelGuiInstall.txt | sed 's| uninstall$|<br>|g')"
 
-if [ "$p_package" = "" ]; then
+if [ "$package" = "" ]; then
     echo $"Nenhuma alteração marcada."
 else
 
@@ -131,7 +131,7 @@ echo '</div>'
 echo '<div id="bcc_footer">'
       echo '<div id="bcc_footer_right">'
         echo '<a href="index.sh.htm" class="waves-effect waves-light btn blue-grey lighten-1"><img src=cancel.png>'$"Voltar"'</a>'
-        if [ "$p_package" != "" ]; then
+        if [ "$package" != "" ]; then
           echo '<a href="wait.sh.htm" class="waves-effect waves-light btn blue-grey lighten-1"><img src=ok.png>'$"Confirmar"'</a>'
         fi
       echo '</div>'

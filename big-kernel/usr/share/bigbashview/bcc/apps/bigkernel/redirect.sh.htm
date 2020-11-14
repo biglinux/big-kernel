@@ -31,9 +31,9 @@ bcc_header
 echo '<link rel="stylesheet" type="text/css" href="theme.css">'
 
 
-id="$p_id"
-name="$p_name"
-option="$p_option"
+id="$id"
+name="$name"
+option="$option"
 
 ################
 # End of create new remaster folder
@@ -79,32 +79,32 @@ echo '</tbody></table>'
 
 echo '<script type="text/javascript">'
 
-if [ "$p_option" = "01" ]; then
+if [ "$option" = "01" ]; then
     echo "window.location.href = \"/usr/share/bigbashview/bcc/apps/bigkernel/kernelList.sh.htm\""
 fi
 
-if [ "$p_option" = "02" ]; then
+if [ "$option" = "02" ]; then
 software-properties-gtk --open-tab=4 2>/dev/null >/dev/null &
     echo "window.location.href = \"/usr/share/bigbashview/bcc/apps/bigkernel/index.sh.htm\""
 fi
 
-if [ "$p_option" = "03" ]; then
+if [ "$option" = "03" ]; then
     echo "window.location.href = \"/usr/share/bigbashview/bcc/apps/bigkernel/kernel.sh.htm?origin=deepin\""
 fi
 
-if [ "$p_option" = "05" ]; then
+if [ "$option" = "05" ]; then
     echo "window.location.href = \"/usr/share/bigbashview/bcc/apps/bigkernel/kernel.sh.htm\""
 fi
 
-if [ "$p_option" = "06" ]; then
+if [ "$option" = "06" ]; then
     echo "window.location.href = \"/usr/share/bigbashview/bcc/apps/bigkernel/waitinitrd.sh.htm\""
 fi
 
-if [ "$p_option" = "07" ]; then
+if [ "$option" = "07" ]; then
     echo "window.location.href = \"/usr/share/bigbashview/bcc/apps/bigkernel/kernelUbuntu.sh.htm\""
 fi
 
-if [ "$p_option" = "08" ]; then
+if [ "$option" = "08" ]; then
 grub-customizer 2>/dev/null >/dev/null &
     echo "window.location.href = \"/usr/share/bigbashview/bcc/apps/bigkernel/index.sh.htm\""
 fi
