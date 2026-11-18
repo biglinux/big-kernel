@@ -19,8 +19,8 @@
 
 _basekernel=7.3
 pkgbase=linux-big73
-pkgver=7.3.3
-pkgrel=2
+pkgver=7.3.5
+pkgrel=1
 arch=('x86_64')
 url="https://github.com/biglinux/big-kernel"
 license=(GPL-2.0-only)
@@ -116,7 +116,6 @@ source=(https://cdn.kernel.org/pub/linux/kernel/v7.x/linux-${_basekernel}.tar.xz
         # BigLinux: Wa_22016122933 series, reviewed upstream (v6)
         0101-drm-xe-Capture-devcoredump-on-TLB-invalidation-timeo.patch
         0102-drm-xe-Log-when-a-timed-out-TLB-invalidation-ack-fin.patch
-        0103-drm-xe-Implement-Wa_22016122933.patch
         # Follow-up to 0103 by Navon John Lukose: map those buffers WC on the CPU
         # (as i915 does), not UC. UC cost ~3 s at boot and ~2.5 s on every resume.
         0104-drm-xe-Map-Wa_22016122933-buffers-WC-on-the-CPU-side.patch
@@ -125,7 +124,7 @@ source=(https://cdn.kernel.org/pub/linux/kernel/v7.x/linux-${_basekernel}.tar.xz
         0300-efi-lock-down-the-kernel-in-Secure-Boot-mode.patch
 )
 sha256sums=('87363c24f10e06321eb362765521094e94471f6bff8bce2d6b3e40f39f004953'
-            '4ebf04f150a2cfd11a435b3fbb1be1f2026dab1b42dc5921e4d86e8c4b23a72d'
+            'e4e0d4e145487087840f123650bed49f642756c34b4e613742c0a0019e0f15f4'
             '22446eb6189abd2f84b75d239a50ea55026c9869dae5c083a934e8706dd259a6'
             '36b420493e2467b99d7fa0d08cf9dfcd53c635f7fde249a0dbdd5b5db8c8bf62'
             'c21170eba77438abb8b8ab02aeccf16bfb2467a01303509945aa6b3a0fd16d31'
@@ -168,7 +167,6 @@ sha256sums=('87363c24f10e06321eb362765521094e94471f6bff8bce2d6b3e40f39f004953'
             'bab29f068a0041f49693d200f24377b30c588ca380107838d0e3fca543732b66'
             '85689db7f888c5fba374b1fcc803e3e26ffc927fdef4d87a022ae9f275635449'
             '91bdd01e6a8ec2de0ca198c0a1916fb588e801abfb28cbdd7e745e7a5e2c9492'
-            'afb9cee8496ce87587865c157dfc8966b387a62b611cf49a3b12b967410f2d05'
             '423c9a165c591b0e8da5851b32253089f3be025b0ab8dfb76cd598af2e07b0e5'
             '44be4bc1911684ea1126b2bcda90c4a443b4b66befe28be5ea8eab02c9adf04e')
 
