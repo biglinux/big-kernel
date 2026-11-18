@@ -226,6 +226,23 @@ class Main(unittest.TestCase):
             self.assertFalse(bump.applies(tree, patch))
             self.assertFalse(bump.applies(tree, patch, reverse=True))
 
+    def test_a_patch_that_creates_a_file_and_then_changes_it_is_not_a_stop(self):
+        # 0001-steam-deck.patch adds drivers/hwmon/steamdeck-hwmon.c and then
+        # changes it further down: patch --dry-run never wrote the file, so
+        # it fits neither way there. 7.3.4 and 7.3.5 stopped on it, short of
+        # Wa_22016122933, already in the kernel, and prepare() failed.
+        creates_then_changes = (
+            "--- /dev/null\n+++ b/c.c\n@@ -0,0 +1,3 @@\n+one\n+two\n+three\n"
+            "--- a/c.c\n+++ b/c.c\n@@ -1,3 +1,3 @@\n one\n-two\n+TWO\n three\n"
+        )
+        self.series([
+            ("0001-new-file.patch", creates_then_changes),
+            ("0002-merged.patch", diff("b.c", B, B_FIXED)),
+        ])
+        result = self.run_watcher(KERNEL_ORG)
+        self.assertEqual(result["dropped"], ["0002-merged.patch"])
+        self.assertEqual(bump.source_entries(self.pkgbuild())[3:], ["0001-new-file.patch"])
+
     def test_a_patch_that_fits_neither_way_stops_the_search(self):
         # 0001 no longer fits: prepare() is left to fail on it and name it,
         # and nothing behind it is dropped on a guess.
