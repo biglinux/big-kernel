@@ -25,7 +25,7 @@ pkgver=7.2.15
 # make /usr/lib/modules/7.2.15-1-big/vmlinuz merely change owner. mkinitcpio
 # would then never remove /boot/vmlinuz-linux-big, left behind as a third
 # GRUB entry. A new release directory makes it a real removal.
-pkgrel=3
+pkgrel=4
 arch=('x86_64')
 url="https://github.com/biglinux/big-kernel"
 license=(GPL-2.0-only)
