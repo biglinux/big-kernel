@@ -22,7 +22,7 @@ pkgbase=linux-big73
 pkgver=7.3.3
 pkgrel=1
 arch=('x86_64')
-url="https://github.com/big-comm/big-kernel"
+url="https://github.com/biglinux/big-kernel"
 license=(GPL-2.0-only)
 makedepends=(
   bc

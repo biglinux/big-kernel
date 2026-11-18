@@ -34,7 +34,7 @@ import urllib.request
 
 RELEASES_URL = "https://www.kernel.org/releases.json"
 CDN = "https://cdn.kernel.org/pub/linux/kernel/v{major}.x"
-USER_AGENT = "big-kernel-watch/1 (+https://github.com/big-comm/big-kernel)"
+USER_AGENT = "big-kernel-watch/1 (+https://github.com/biglinux/big-kernel)"
 
 
 def log(message):

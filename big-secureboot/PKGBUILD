@@ -44,7 +44,7 @@ pkgver=1.1.5
 pkgrel=1
 pkgdesc="Secure Boot for BigLinux, set up as Easy Anti-Cheat requires: shim, a signed GRUB and the BigLinux key"
 arch=('x86_64')
-url="https://github.com/big-comm/big-kernel"
+url="https://github.com/biglinux/big-kernel"
 license=('GPL-3.0-or-later' 'BSD-2-Clause')
 depends=(
   'bash'

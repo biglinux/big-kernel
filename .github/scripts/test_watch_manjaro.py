@@ -54,7 +54,7 @@ def builds_testing_too(module):
 
 
 def up_to_date(manjaro, testing=None):
-    """What BigCommunity has published when every module matches."""
+    """What BigLinux has published when every module matches."""
     ours = {K: KERNEL}
     for name, source in watch.MODULES.items():
         module = watch.module_package(K, name)
@@ -76,8 +76,11 @@ def databases(stable_ours, testing_ours, stable_manjaro=MANJARO, testing_manjaro
         watch.MANJARO_DB.format(branch="stable"): stable_manjaro,
         watch.MANJARO_DB.format(branch="testing"): testing_manjaro,
     }
+    # BigLinux's stable and testing hold the kernels and modules as well as
+    # the drivers BigLinux publishes: one database, both sets.
     for name, db in extra.items():
-        by_url[watch.BIGLINUX_DB.format(branch=name.replace("_", "-"))] = db
+        url = watch.BIGLINUX_DB.format(branch=name.replace("_", "-"))
+        by_url[url] = dict(by_url.get(url, {}), **db)
     known = {url for _m, _o, search in watch.BRANCHES.values() for url in search} | set(by_url)
 
     def fetch(url):
@@ -629,7 +632,7 @@ class Payload(unittest.TestCase):
         self.assertEqual(body["event_type"], f"{K}-nvidia-open")
         data = body["client_payload"]
         self.assertEqual(data["pkgbuild_dir"], f"{K}-nvidia-open")
-        self.assertEqual(data["url"], "https://github.com/big-comm/big-kernel")
+        self.assertEqual(data["url"], "https://github.com/biglinux/big-kernel")
         self.assertEqual((data["branch_type"], data["manjaro_branch"], data["new_branch"]), ("testing", "testing", "main"))
         self.assertNotIn("new_branch", watch.payload("stable", "stable", "x")["client_payload"])
 
