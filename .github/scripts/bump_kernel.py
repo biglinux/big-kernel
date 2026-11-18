@@ -136,8 +136,11 @@ def upstreamed_patches(tree, patches):
     They are applied one after another, as prepare() does, because a patch
     is written on top of the ones before it: on a bare tree its context would
     not match either way. One that does not apply but reverses is already in
-    the kernel. The first that does neither stops the search; prepare() then
-    fails on it and names it.
+    the kernel. One that does neither by dry run is applied for real all the
+    same: --dry-run writes nothing, so a patch that creates a file and changes
+    it further down (0001-steam-deck.patch) never fits it. The first that
+    really does not apply stops the search; prepare() then fails on it and
+    names it.
     """
     found = []
     for patch in patches:
@@ -147,7 +150,11 @@ def upstreamed_patches(tree, patches):
         elif applies(tree, patch, reverse=True):
             found.append(patch)
         else:
-            break
+            with open(patch, "rb") as data:
+                done = subprocess.run(["patch", "-p1", "-N", "-s", "-f"], cwd=tree, stdin=data,
+                                      capture_output=True).returncode == 0
+            if not done:
+                break
     return found
 
 
