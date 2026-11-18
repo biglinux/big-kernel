@@ -56,7 +56,7 @@ pkgver=7.2
 pkgrel=1
 epoch=1
 arch=('x86_64')
-url="https://github.com/big-comm/big-kernel"
+url="https://github.com/biglinux/big-kernel"
 license=('GPL-2.0-only')
 
 # What linux-big<suffix> depends on: linux-big73<suffix>, linux-big72<suffix>, ...

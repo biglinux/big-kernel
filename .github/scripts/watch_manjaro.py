@@ -8,10 +8,10 @@ module packages each depend on one exact kernel and on one exact driver
 version. They go stale in two ways: a new kernel is published, or Manjaro
 publishes a new driver.
 Either way the right version is computable, and this script compares it with
-what BigCommunity has published, branch by branch, and dispatches a build of
+what BigLinux has published, branch by branch, and dispatches a build of
 every module that is behind. The driver version is the one users get: the
-first of their repositories that has it -- BigLinux, Manjaro, BigCommunity --
-in their pacman.conf order, since that is how pacman chooses.
+first of their repositories that has it -- BigLinux priority, Manjaro,
+BigLinux -- in their pacman.conf order, since that is how pacman chooses.
 
 Nothing is edited: the module PKGBUILDs read the driver version from pacman
 and the kernel version from ../linux-bigNN/PKGBUILD when they build, so a build
@@ -43,9 +43,9 @@ import tarfile
 import time
 import urllib.request
 
-REPOSITORY_URL = "https://github.com/big-comm/big-kernel"
+REPOSITORY_URL = "https://github.com/biglinux/big-kernel"
 USER_AGENT = f"big-kernel-watch/1 (+{REPOSITORY_URL})"
-WORKFLOW_REPOSITORY = "big-comm/build-package"
+WORKFLOW_REPOSITORY = "biglinux/build-package"
 
 # Module -> the Manjaro package its driver version follows, or None when the
 # version is fixed in the PKGBUILD itself. Each series has a directory per
@@ -92,44 +92,38 @@ def kernel_of(package):
 
 MANJARO_DB = "https://mirrors.manjaro.org/repo/{branch}/extra/x86_64/extra.db"
 # Each repository at <host>/<section>/<arch>, the $repo/$arch layout pacman.conf uses.
-COMMUNITY_DB = "https://repo.communitybig.org/community-{branch}/x86_64/community-{branch}.db"
 BIGLINUX_DB = "https://packages.biglinux.com.br/biglinux-{branch}/x86_64/biglinux-{branch}.db"
 
-# BigCommunity branch -> the Manjaro branch its builds run against, the
-# database modules are published to, and the repositories the driver version
-# is looked up in, in pacman.conf order. pacman takes a package from the
-# first repository that has it, so that order decides which driver version
-# users get: a driver BigLinux publishes ahead of Manjaro's wins.
+# BigLinux branch -> the Manjaro branch its builds run against, the database
+# modules are published to, and the repositories the driver version is
+# looked up in, in pacman.conf order. pacman takes a package from the first
+# repository that has it, so that order decides which driver version users
+# get: a driver BigLinux publishes ahead of Manjaro's wins. BigCommunity's
+# own repositories, ahead of BigLinux's on its systems, carry no driver.
 #
-# Both branches follow Manjaro STABLE's drivers. build-package builds every
-# package against Manjaro stable, whatever manjaro_branch says, so that is
-# the driver a module is really built for. Expecting Manjaro testing's here
+# Both branches follow Manjaro STABLE's drivers: the builds are sent with
+# manjaro_branch=stable, so that is the driver a module is really built for. Expecting Manjaro testing's here
 # made the watcher dispatch builds that came out with the old driver, record
 # the new version as done, and then never rebuild it once Manjaro stable got
-# that driver: community-testing kept a module older than nvidia-utils.
+# that driver: testing kept a module older than nvidia-utils.
 # The modules whose PKGBUILD also builds for Manjaro testing's driver
 # (TESTING_MARK) follow that one too, in both branches: see module_driver().
 BRANCHES = {
     "stable": (
         "stable",
-        COMMUNITY_DB.format(branch="stable"),
+        BIGLINUX_DB.format(branch="stable"),
         [
             BIGLINUX_DB.format(branch="priority"),
             MANJARO_DB.format(branch="stable"),
-            COMMUNITY_DB.format(branch="stable"),
-            COMMUNITY_DB.format(branch="extra"),
             BIGLINUX_DB.format(branch="stable"),
         ],
     ),
     "testing": (
         "stable",
-        COMMUNITY_DB.format(branch="testing"),
+        BIGLINUX_DB.format(branch="testing"),
         [
             BIGLINUX_DB.format(branch="priority"),
             MANJARO_DB.format(branch="stable"),
-            COMMUNITY_DB.format(branch="testing"),
-            COMMUNITY_DB.format(branch="stable"),
-            COMMUNITY_DB.format(branch="extra"),
             BIGLINUX_DB.format(branch="testing"),
             BIGLINUX_DB.format(branch="stable"),
         ],
@@ -144,13 +138,13 @@ TESTING_MARK = re.compile(r"^_manjaro_testing=", re.MULTILINE)
 MANJARO_TESTING_DB = MANJARO_DB.format(branch="testing")
 
 
-# What a user of each branch sees of BigCommunity's own packages, lowest
+# What a user of each branch sees of these packages in BigLinux, lowest
 # priority first: a testing user also has stable, and pacman takes testing's
 # copy when both have one. Moving the kernel from testing to stable must not
 # look, to the watcher, as if testing had lost it.
 VIEWS = {
-    "stable": [COMMUNITY_DB.format(branch="stable")],
-    "testing": [COMMUNITY_DB.format(branch="stable"), COMMUNITY_DB.format(branch="testing")],
+    "stable": [BIGLINUX_DB.format(branch="stable")],
+    "testing": [BIGLINUX_DB.format(branch="stable"), BIGLINUX_DB.format(branch="testing")],
 }
 
 
@@ -175,7 +169,7 @@ def log(message):
 
 
 def fetch(url):
-    # repo.communitybig.org refuses urllib's default User-Agent.
+    # Package servers may refuse urllib's default User-Agent.
     request = urllib.request.Request(url, headers={"User-Agent": USER_AGENT})
     with urllib.request.urlopen(request, timeout=120) as response:
         return response.read()
@@ -305,7 +299,7 @@ def version_key(version):
 
 
 def branch_view(branch, fetch_database):
-    """BigCommunity's own packages as a user of `branch` sees them."""
+    """These packages, in BigLinux, as a user of `branch` sees them."""
     ours = {}
     for url in VIEWS[branch]:
         ours.update(fetch_database(url))

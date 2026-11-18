@@ -177,7 +177,7 @@ Zone, Steam Deck and OrangePi NEO.
 
 ## Installing
 
-linux-big is published in the BigCommunity repositories and installs next to
+linux-big is published in the BigLinux repositories and installs next to
 your current kernel — it does not replace it.
 
 ```bash
@@ -381,18 +381,18 @@ Nobody rebuilds them by hand. The [watcher](.github/workflows/watch-manjaro.yml)
 compares, every 30 minutes, for every series and for both the testing and
 stable branches, what the modules should be — the driver users get, on that
 series' kernel — with
-what BigCommunity has published, and dispatches a build of every module that is
+what BigLinux has published, and dispatches a build of every module that is
 behind. A build that does not get published, usually because of the network, is
 dispatched again once it is no longer running and at least half an hour has
 passed since the last dispatch, up to three attempts in all; after the third the
 watcher run fails once, so GitHub mails it. The driver version is resolved the
 way pacman does it: from the first repository in the users' order that has it —
-BigLinux, then Manjaro, then BigCommunity — so a driver BigLinux publishes ahead
+BigLinux priority, then Manjaro, then BigLinux — so a driver BigLinux publishes ahead
 of Manjaro is followed too. Both branches follow the drivers of Manjaro
 **stable**, the branch every package is built against.
 
 Which NVIDIA driver a machine has is decided by its Manjaro branch, not by
-BigCommunity's. So while Manjaro testing has a newer NVIDIA driver than stable,
+BigLinux's. So while Manjaro testing has a newer NVIDIA driver than stable,
 the `nvidia-open`, `nvidia`, `nvidia-580xx-open` and `nvidia-580xx` modules
 carry a build for each — the version names both, stable's first, as in
 `610.57.04+615.71.09` — and a pacman hook points the system at the build of
@@ -422,7 +422,7 @@ The kernel image and every module package are signed with the BigLinux
 Secure Boot key (`secureboot/sign.sh`; the certificate, which keeps its name
 "BigCommunity Secure Boot 2026", is `secureboot/bigcommunity-secureboot-2026.crt`).
 The CI provides the key to this repository's builds only
-(big-comm/build-package, `scripts/secureboot-key.sh`). A build without the key, a local one for
+(biglinux/build-package, `scripts/secureboot-key.sh`). A build without the key, a local one for
 example, signs nothing. With Secure Boot off the signature is ignored and
 nothing changes. `.github/scripts/test_secureboot.py` fails if a series or a
 module package stops signing.
@@ -493,7 +493,7 @@ echo adios | sudo tee /sys/block/nvme0n1/queue/scheduler
 ### Build and install the kernel
 
 ```bash
-git clone https://github.com/big-comm/big-kernel
+git clone https://github.com/biglinux/big-kernel
 cd big-kernel/linux-big73
 makepkg -s
 ```
@@ -539,8 +539,8 @@ you have.
 
 ### How the official packages are built
 
-Official packages are built by the BigCommunity CI
-([build-package](https://github.com/big-comm/build-package)). The repository
+Official packages are built by the BigLinux CI
+([build-package](https://github.com/biglinux/build-package)). The repository
 holds one directory per package, and the CI builds the one it is asked for.
 
 ```
@@ -588,4 +588,4 @@ Claims about speed will be made here with numbers, once the benchmarks exist.
   Daniele Ceraolo Spurio.
 - The packaging in this repository is under the [MIT license](LICENSE).
 
-Maintained by [BigCommunity](https://communitybig.org).
+Maintained by [BigLinux](https://www.biglinux.com.br).

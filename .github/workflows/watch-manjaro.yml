@@ -67,8 +67,9 @@ jobs:
       - name: Dispatch the modules that are behind
         id: dispatch
         env:
-          # A token allowed to dispatch to big-comm/build-package.
-          DISPATCH_TOKEN: ${{ secrets.DISPATCH_TOKEN || secrets.ORGANIZATION_TOKEN }}
+          # A token allowed to dispatch to biglinux/build-package: the organization's
+          # WEBHOOK_TOKEN, the one every BigLinux package repository uses.
+          DISPATCH_TOKEN: ${{ secrets.WEBHOOK_TOKEN || secrets.DISPATCH_TOKEN }}
           DRY_RUN: ${{ inputs.dry_run && '--dry-run' || '' }}
           FORCE: ${{ inputs.force && '--force' || '' }}
         run: python3 .github/scripts/watch_manjaro.py --state watch-state.json $DRY_RUN $FORCE
@@ -102,7 +103,7 @@ jobs:
       # One word each: "testing:linux-big73=7.3.3-1 testing:linux-big73-zfs=2.4.4-7030301".
       - name: Wait for what was dispatched
         env:
-          DISPATCH_TOKEN: ${{ secrets.DISPATCH_TOKEN || secrets.ORGANIZATION_TOKEN }}
+          DISPATCH_TOKEN: ${{ secrets.WEBHOOK_TOKEN || secrets.DISPATCH_TOKEN }}
           FOLLOW: ${{ needs.watch.outputs.follow }}
         run: |
           read -ra builds <<< "$FOLLOW"
