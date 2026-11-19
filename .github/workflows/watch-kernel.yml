@@ -12,6 +12,10 @@ name: 🐧 Follow the kernel series
 # a person. An older series that reached its end of life is kept as it is,
 # for the machines that still boot it, and is not reported again.
 # So is moving testing to stable. See .github/scripts/bump_kernel.py.
+#
+# It also raises big-secureboot's pkgrel when the grub or the theme fonts its
+# signed GRUB is built from change in the repositories, so a grub fix reaches
+# the machines with Secure Boot. See .github/scripts/bump_secureboot.py.
 
 on:
   schedule:
@@ -104,6 +108,32 @@ jobs:
             } > "$RUNNER_TEMP/message"
             git commit -F "$RUNNER_TEMP/message"
           done
+          git push origin "HEAD:${GITHUB_REF_NAME}"
+
+      # A new grub (or theme font) in the repositories: a new big-secureboot
+      # release, which the module watcher then sends to testing.
+      - name: Follow grub in big-secureboot
+        id: secureboot
+        run: |
+          python3 .github/scripts/bump_secureboot.py --result "$RUNNER_TEMP/secureboot.json"
+          echo "bumped=$(jq -r '.status == "bumped"' "$RUNNER_TEMP/secureboot.json")" >> "$GITHUB_OUTPUT"
+
+      - name: Commit big-secureboot
+        if: steps.secureboot.outputs.bumped == 'true' && !inputs.dry_run && github.ref_name == github.event.repository.default_branch
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898898+github-actions[bot]@users.noreply.github.com"
+          git add big-secureboot/PKGBUILD
+          {
+            jq -r '"🔐 big-secureboot: \(.from) → \(.to)"' "$RUNNER_TEMP/secureboot.json"
+            echo
+            echo "Rebuilt by the kernel watcher: its signed GRUB is made from"
+            echo "packages that changed in the repositories."
+            echo
+            jq -r '.changed | to_entries[] | "  \(.key): \(.value[0]) → \(.value[1])"' "$RUNNER_TEMP/secureboot.json"
+          } > "$RUNNER_TEMP/message"
+          git commit -F "$RUNNER_TEMP/message"
+          git pull --rebase origin "${GITHUB_REF_NAME}"
           git push origin "HEAD:${GITHUB_REF_NAME}"
 
       # Failures of any series; end of life only of the current one: an older

@@ -70,6 +70,10 @@ MODULES = {
 KERNEL_PACKAGE = re.compile(r"linux-big[0-9]+")
 # The metapackages' directory and the name of the first of them.
 META = "linux-big"
+# The Secure Boot package: shim, the signed GRUB and the key. Built when its
+# PKGBUILD is ahead of testing; bump_secureboot.py raises its pkgrel when the
+# grub or the theme fonts it is built from change.
+SECUREBOOT = "big-secureboot"
 
 
 def kernel_packages(root):
@@ -480,15 +484,38 @@ def plan_meta(root, fetch_database):
     return [("testing", "stable", META, expected)]
 
 
+def plan_secureboot(root, fetch_database):
+    """big-secureboot's build for testing, when its PKGBUILD is ahead.
+
+    Like the metapackages, it is moved to stable by a person.
+    """
+    where = f"{SECUREBOOT}/PKGBUILD"
+    try:
+        text = Tree(root).read(where)
+    except OSError:
+        return []
+    expected = f"{text_value(text, 'pkgver', where)}-{text_value(text, 'pkgrel', where)}"
+    published = branch_view("testing", fetch_database).get(SECUREBOOT)
+    if published == expected:
+        log(f"[testing] {SECUREBOOT} {expected}: up to date")
+        return []
+    if published is not None and version_key(published) > version_key(expected):
+        log(f"[testing] {SECUREBOOT}: published {published} is newer than the PKGBUILD's {expected}; left alone")
+        return []
+    log(f"[testing] {SECUREBOOT}: published {published}, PKGBUILD is {expected}; building it")
+    return [("testing", "stable", SECUREBOOT, expected)]
+
+
 def plan_all(root, fetch_database, refs=None, find=find_commit):
-    """Every series' builds, then the metapackages'. refs[kernel_pkg] is plan()'s refs."""
+    """Every series' builds, then the metapackages' and big-secureboot's.
+    refs[kernel_pkg] is plan()'s refs."""
     builds = []
     for kernel_pkg in kernel_packages(root):
         series_refs = {}
         builds += plan(root, fetch_database, kernel_pkg, refs=series_refs, find=find)
         if series_refs and refs is not None:
             refs[kernel_pkg] = series_refs
-    return builds + plan_meta(root, fetch_database)
+    return builds + plan_meta(root, fetch_database) + plan_secureboot(root, fetch_database)
 
 
 def payload(branch, manjaro_branch, module, ref="main"):
@@ -619,8 +646,11 @@ def wait_for_build(expected, published, in_flight, sleep=time.sleep, now=time.mo
 
 
 # What a run dispatched, handed to the job that follows it: BRANCH:PACKAGE=VERSION,
-# a kernel, one of its modules or the metapackage (testing:linux-big=1:7.3-1).
-FOLLOWED = re.compile(r"(stable|testing):(linux-big(?:[0-9]+(?:-[A-Za-z0-9._+-]+)?)?)=([A-Za-z0-9._+:~-]+)")
+# a kernel, one of its modules, the metapackage (testing:linux-big=1:7.3-1) or
+# big-secureboot.
+FOLLOWED = re.compile(
+    r"(stable|testing):(linux-big(?:[0-9]+(?:-[A-Za-z0-9._+-]+)?)?|big-secureboot)=([A-Za-z0-9._+:~-]+)"
+)
 
 
 def follow_builds(items, token, wait=wait_for_build, sleep=time.sleep, now=time.monotonic):

@@ -754,6 +754,40 @@ class Meta(unittest.TestCase):
         self.assertEqual(self.plan(testing), [])
 
 
+class SecureBoot(unittest.TestCase):
+    """big-secureboot goes to testing when its PKGBUILD is ahead."""
+
+    def setUp(self):
+        watch.log = lambda _message: None
+        where = os.path.join(ROOT, watch.SECUREBOOT, "PKGBUILD")
+        self.expected = "{}-{}".format(watch.pkgbuild_value(where, "pkgver"), watch.pkgbuild_value(where, "pkgrel"))
+
+    def plan(self, testing, stable=None):
+        return watch.plan_secureboot(ROOT, databases(stable or {}, testing))
+
+    def test_built_when_testing_lacks_it(self):
+        self.assertEqual(self.plan({}), [("testing", "stable", watch.SECUREBOOT, self.expected)])
+
+    def test_built_when_testing_has_an_older_release(self):
+        self.assertEqual(self.plan({watch.SECUREBOOT: "1.0.0-1"}),
+                         [("testing", "stable", watch.SECUREBOOT, self.expected)])
+
+    def test_nothing_when_published_in_testing_or_moved_to_stable(self):
+        self.assertEqual(self.plan({watch.SECUREBOOT: self.expected}), [])
+        self.assertEqual(self.plan({}, stable={watch.SECUREBOOT: self.expected}), [])
+
+    def test_a_newer_one_published_by_hand_is_left_alone(self):
+        self.assertEqual(self.plan({watch.SECUREBOOT: "99.0.0-1"}), [])
+
+    def test_its_dispatch_points_at_its_directory(self):
+        body = watch.payload("testing", "stable", watch.SECUREBOOT)
+        self.assertEqual(body["client_payload"]["pkgbuild_dir"], watch.SECUREBOOT)
+        self.assertEqual(body["client_payload"]["url"], watch.REPOSITORY_URL)
+
+    def test_the_follow_up_accepts_it(self):
+        self.assertTrue(watch.FOLLOWED.fullmatch(f"testing:{watch.SECUREBOOT}=1.1.5-2"))
+
+
 class TwoKernels(unittest.TestCase):
     """Both series dispatched at once: the workflow waits for both."""
 
