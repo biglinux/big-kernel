@@ -52,7 +52,7 @@ _built_with=(
 )
 
 pkgname=big-secureboot
-pkgver=1.1.5
+pkgver=1.2.0
 pkgrel=1
 pkgdesc="Secure Boot for BigLinux, set up as Easy Anti-Cheat requires: shim, a signed GRUB and the BigLinux key"
 arch=('x86_64')
@@ -158,6 +158,14 @@ package() {
     "$shim/shimx64.efi" "$shim/mmx64.efi" grubx64.efi sbat.csv
   install -Dm644 "$_sb_cert" "$pkgdir/usr/share/big-secureboot/big-secureboot.crt"
   openssl x509 -in "$_sb_cert" -outform DER -out "$pkgdir/usr/share/big-secureboot/big-secureboot.der"
+  # The keys of earlier releases, so the upgrade swaps them for this one on
+  # the machines that enrolled them (see big-secureboot, swap_keys).
+  local old
+  install -dm755 "$pkgdir/usr/share/big-secureboot/retired"
+  for old in "$startdir"/retired/*.crt; do
+    openssl x509 -in "$old" -outform DER \
+      -out "$pkgdir/usr/share/big-secureboot/retired/$(basename "$old" .crt).der"
+  done
   install -Dm755 big-secureboot "$pkgdir/usr/bin/big-secureboot"
   install -Dm644 90-big-secureboot.cfg "$pkgdir/etc/default/grub.d/90-big-secureboot.cfg"
   install -Dm644 90-big-secureboot.conf "$pkgdir/usr/lib/sysctl.d/90-big-secureboot.conf"

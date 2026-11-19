@@ -22,6 +22,14 @@
 # confirms it with the password given here. That screen is the one manual
 # step, and it is deliberate: only someone at the machine can add a key.
 #
+# The key changed once, on 2026-11-19: "BigCommunity Secure Boot 2026" gave
+# way to "BigLinux Secure Boot 2026", and everything since is signed with the
+# new one. The old certificates stay in /usr/share/big-secureboot/retired.
+# On a machine that has one of them enrolled, "refresh" (the package
+# upgrade) schedules the new key and the removal of the old: both are
+# confirmed on the same blue screen at the next boot, which shim shows before
+# the GRUB the old key no longer verifies.
+#
 # The key goes into shim's own list (MokList), not into the firmware's
 # keys: PK, KEK, db and dbx stay as the manufacturer left them, Microsoft's
 # included, which the firmware of GPUs and other devices (option ROMs) needs.
@@ -43,6 +51,7 @@ LABEL="BigLinux Secure Boot"
 OLD_LABEL="BigCommunity Secure Boot"
 LOADER='\EFI\big-secureboot\shimx64.efi'
 CERT=$SHARE/big-secureboot.der
+RETIRED=$SHARE/retired
 DEFAULT_PASSWORD=big
 
 say() { printf '%s\n' "$*"; }
@@ -115,15 +124,24 @@ create_boot_entry() {
 
 # By fingerprint: mokutil's own wording changes once the kernel has loaded
 # the key ("already in the built-in trusted keyring").
-fingerprint() { openssl x509 -inform DER -in "$CERT" -noout -fingerprint -sha1 | sed 's/.*=//; s/://g' | tr 'A-F' 'a-f'; }
+fingerprint() { openssl x509 -inform DER -in "${1:-$CERT}" -noout -fingerprint -sha1 | sed 's/.*=//; s/://g' | tr 'A-F' 'a-f'; }
 # Read the whole list before searching it: "mokutil | grep -q" under pipefail
 # fails once grep stops reading and mokutil, still printing the certificates
 # that follow, dies of SIGPIPE (141), so an enrolled key looked missing.
+# has_key LIST [CERT]: whether CERT (the BigLinux key) is in mokutil's LIST.
 has_key() {
   local list
   list=$(mokutil "$1" 2>/dev/null) || true
   list=${list//:/}
-  [[ ${list,,} == *"$(fingerprint)"* ]]
+  [[ ${list,,} == *"$(fingerprint "${2:-}")"* ]]
+}
+# The retired keys still enrolled.
+retired_enrolled() {
+  local old
+  for old in "$RETIRED"/*.der; do
+    [[ -e $old ]] && has_key --list-enrolled "$old" && printf '%s\n' "$old"
+  done
+  return 0
 }
 # Before scheduling the key: what would make the blue screen pointless.
 #  - shim is signed with Microsoft's CAs for other systems (the "3rd Party"
@@ -146,6 +164,51 @@ nvram_free() {  # bytes, or nothing when the kernel does not report it
 }
 key_enrolled() { has_key --list-enrolled; }
 key_pending() { has_key --list-new; }
+
+# Schedules the BigLinux key, starting the request over if one is pending:
+# mokutil skips a key already requested ("already in the enrollment request")
+# and exits 0, and the password printed after would not be the one
+# MokManager asks for (1.1.0 used another one).
+import_key() {
+  if key_pending; then
+    mokutil --revoke-import >/dev/null || die "mokutil --revoke-import failed"
+  fi
+  printf '%s\n%s\n' "$1" "$1" | mokutil --import "$CERT" >/dev/null ||
+    die "mokutil --import failed"
+}
+
+# Schedules the removal of a key, unless it already is.
+delete_key() {
+  has_key --list-delete "$1" && return 0
+  printf '%s\n%s\n' "$DEFAULT_PASSWORD" "$DEFAULT_PASSWORD" | mokutil --delete "$1" >/dev/null
+}
+
+# On a machine with a retired key: the new key in, the old one out, both on
+# the next boot's blue screen. Without the new key shim refuses the GRUB and
+# the kernels signed with it, so this runs with the package upgrade.
+swap_keys() {
+  local old retired
+  retired=$(retired_enrolled)
+  [[ -n $retired ]] || return 0
+  key_enrolled || key_pending || import_key "$DEFAULT_PASSWORD"
+  while IFS= read -r old; do
+    delete_key "$old" || say "Warning: could not schedule the removal of the old key $(basename "$old" .der)."
+  done <<< "$retired"
+  cat <<EOF
+
+The BigLinux Secure Boot key changed, and the new kernels and boot loader are
+signed with the new one. At the next boot, done only once:
+  1. Restart. A blue screen appears (MokManager).
+  2. Press a key, choose "Enroll MOK", then "Continue" and "Yes", and type
+     the password: $DEFAULT_PASSWORD
+  3. Choose "Delete MOK", then "Continue" and "Yes", and type the password
+     again: $DEFAULT_PASSWORD
+  4. Choose "Reboot".
+Skipping that screen leaves the system unable to start with Secure Boot on
+(it starts with Secure Boot off); "sudo big-secureboot refresh" schedules it
+again.
+EOF
+}
 
 cmd_enable() {
   need_root enable
@@ -193,18 +256,12 @@ Old crash dumps kept by the firmware usually fill it: ls /sys/firmware/efi/efiva
     say "Warning: the GRUB menu could not be updated; run update-grub."
   sysctl -q -p /usr/lib/sysctl.d/90-big-secureboot.conf || true
   say "Boot loaders installed in $(find_esp)/$ESP_DIR, boot entry \"$LABEL\" created."
-  if key_enrolled; then
+  if [[ -n $(retired_enrolled) ]]; then
+    swap_keys
+  elif key_enrolled; then
     say "The BigLinux key is already enrolled."
   else
-    # A key already pending keeps the password of its request: mokutil skips
-    # it ("already in the enrollment request") and exits 0, and the password
-    # printed below would not be the one MokManager asks for (1.1.0 used
-    # another one). Start the request over, so it always holds this one.
-    if key_pending; then
-      mokutil --revoke-import >/dev/null || die "mokutil --revoke-import failed"
-    fi
-    printf '%s\n%s\n' "$password" "$password" | mokutil --import "$CERT" >/dev/null ||
-      die "mokutil --import failed"
+    import_key "$password"
     cat <<EOF
 
 One step is left, at the next boot, done only once:
@@ -223,6 +280,7 @@ cmd_refresh() {
   need_root refresh
   [[ -d /sys/firmware/efi ]] && enabled || exit 0
   install_loaders
+  swap_keys
 }
 
 cmd_disable() {
@@ -244,9 +302,15 @@ cmd_disable() {
     say "Warning: Secure Boot is on. Turn it off in the firmware settings before restarting,"
     say "or the system may not start."
   fi
-  if (( remove_key )) && key_enrolled; then
-    printf '%s\n%s\n' "$DEFAULT_PASSWORD" "$DEFAULT_PASSWORD" | mokutil --delete "$CERT" >/dev/null &&
+  if (( remove_key )); then
+    local old scheduled=0
+    if key_enrolled; then delete_key "$CERT" && scheduled=1; fi
+    while IFS= read -r old; do
+      [[ -n $old ]] && delete_key "$old" && scheduled=1
+    done <<< "$(retired_enrolled)"
+    if (( scheduled )); then
       say "Key removal scheduled: confirm it on the blue screen at the next boot (password: $DEFAULT_PASSWORD)."
+    fi
   fi
 }
 
@@ -265,6 +329,8 @@ cmd_status() {
   if key_enrolled; then check "BigLinux key enrolled" true
   elif key_pending; then check "BigLinux key enrolled (pending: confirm it on the blue screen when restarting)" false
   else check "BigLinux key enrolled" false; fi
+  # Easy Anti-Cheat wants every enrolled MOK to be one it knows.
+  check "no old BigCommunity key enrolled (sudo big-secureboot refresh removes it)" "[[ -z \$(retired_enrolled) ]]"
   say "Easy Anti-Cheat requirements:"
   check "Secure Boot on" "mokutil --sb-state 2>/dev/null | grep -q 'SecureBoot enabled'"
   check "TPM 2.0" "[[ \$(cat /sys/class/tpm/tpm0/tpm_version_major 2>/dev/null) == 2 ]]"
