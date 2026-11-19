@@ -22,7 +22,9 @@
 #     usual ones.
 #
 # The GRUB image is built from the grub package of the build, so when Manjaro
-# publishes a new grub this package needs a new build to follow it.
+# publishes a new grub this package needs a new build to follow it: the
+# kernel watcher raises pkgrel then (_built_with below), and the module
+# watcher sends it to testing.
 #
 # GRUB's SBAT generation: the shim of 2026 refuses GRUB below generation 7
 # (CVE-2026-97876, which affects 2.12 to 2.15). Manjaro's grub ships an
@@ -38,6 +40,16 @@
 source ../secureboot/sign.sh
 
 _shimver=16.1-7
+
+# What the last release's GRUB was built from, as a testing build installs
+# it: when one of these changes, .github/scripts/bump_secureboot.py writes
+# the new versions here and raises pkgrel, and the new release is built.
+# One 'package=version' a line.
+_built_with=(
+  'grub=2:2.16-3.1'
+  'grub-theme-biglinux=26.10.31-1730'
+  'grub-theme-community=1:26.10.31-1730'
+)
 
 pkgname=big-secureboot
 pkgver=1.1.5

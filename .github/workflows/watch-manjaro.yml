@@ -5,7 +5,8 @@ name: 🔎 Keep kernel modules in step
 # rebuilds its module packages (NVIDIA, broadcom-wl, zfs, ...) whenever they
 # fall behind: Manjaro published a new driver, or a new kernel was published.
 # Then sends the linux-big metapackages to testing once everything they
-# depend on is there. See .github/scripts/watch_manjaro.py.
+# depend on is there, and big-secureboot when its PKGBUILD is ahead of
+# testing. See .github/scripts/watch_manjaro.py.
 
 on:
   schedule:
@@ -14,6 +15,8 @@ on:
     branches: [main]
     paths:
       - "linux-big*/PKGBUILD"
+      - "big-secureboot/**"
+      - "secureboot/**"
       - ".github/scripts/**"
       - ".github/workflows/watch-manjaro.yml"
   workflow_dispatch:
