@@ -1,3 +1,3 @@
 sbat,1,SBAT Version,sbat,1,https://github.com/rhboot/shim/blob/main/SBAT.md
 grub,7,Free Software Foundation,grub,@UPSTREAM@,https://www.gnu.org/software/grub/
-grub.big-secureboot,1,BigCommunity,grub,@VERSION@,https://github.com/big-comm/big-kernel
+grub.big-secureboot,1,BigLinux,grub,@VERSION@,https://github.com/biglinux/big-kernel

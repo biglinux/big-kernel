@@ -419,8 +419,10 @@ needed; an explicit `LLVM=` on the command line still overrides it.
 ## Secure Boot and anti-cheat
 
 The kernel image and every module package are signed with the BigLinux
-Secure Boot key (`secureboot/sign.sh`; the certificate, which keeps its name
-"BigCommunity Secure Boot 2026", is `secureboot/bigcommunity-secureboot-2026.crt`).
+Secure Boot key (`secureboot/sign.sh`; the certificate, "BigLinux Secure Boot
+2026", is `secureboot/biglinux-secureboot-2026.crt`). It replaced the
+"BigCommunity Secure Boot 2026" key on 2026-11-19; `big-secureboot` 1.2.0
+swaps the enrolled MOK on the machines that had the old one.
 The CI provides the key to this repository's builds only
 (biglinux/build-package, `scripts/secureboot-key.sh`). A build without the key, a local one for
 example, signs nothing. With Secure Boot off the signature is ignored and

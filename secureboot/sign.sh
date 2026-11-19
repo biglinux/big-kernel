@@ -1,21 +1,22 @@
 # Secure Boot signing for linux-big, sourced by the kernel and module PKGBUILDs.
 #
 # The kernel image and the out-of-tree modules are signed with the
-# BigCommunity Secure Boot key. Users enroll its certificate
-# (bigcommunity-secureboot-2026.crt, here) as a MOK; shim then boots the
+# BigLinux Secure Boot key. Users enroll its certificate
+# (biglinux-secureboot-2026.crt, here) as a MOK; shim then boots the
 # kernel, and the kernel takes the MOK into its .machine keyring and loads
 # these modules under lockdown. The modules built with the kernel need
 # nothing: they are signed with the kernel's own build-time key.
 #
 # The private key is never in this repository. The CI writes it to a file
-# for the kernel builds only and passes its path in BIGCOMMUNITY_SB_KEY. With
+# for the kernel builds only and passes its path in BIGCOMMUNITY_SB_KEY (a
+# name biglinux/build-package sets; it kept the name of the first key). With
 # no key (any local build) nothing is signed and the packages are exactly
 # what they were before: the signature is only an extra block, ignored when
 # Secure Boot is off. With a key, a signature that fails stops the build, so
 # a half-signed kernel is never published.
 
-_sb_cert="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)/bigcommunity-secureboot-2026.crt"
-_sb_signer="BigCommunity Secure Boot 2026"
+_sb_cert="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)/biglinux-secureboot-2026.crt"
+_sb_signer="BigLinux Secure Boot 2026"
 
 _sb_enabled() {
   [[ -n ${BIGCOMMUNITY_SB_KEY:-} ]] || return 1
