@@ -39,6 +39,7 @@ MANJARO = {
     "virtualbox-host-dkms": "7.2.16-1",
     "zfs-dkms": "2.4.4-1",
     "vhba-module-dkms": "20260313-1",
+    "v4l2loopback-dkms": "0.15.4-2",
     "acpi_call-dkms": "1.2.2-3.0",
 }
 

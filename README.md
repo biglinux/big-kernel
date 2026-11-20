@@ -351,6 +351,7 @@ Every series has the same set; the table names the modules of 7.3.
 | `linux-big73-virtualbox-host-modules` | running VirtualBox virtual machines |
 | `linux-big73-zfs` | the ZFS file system |
 | `linux-big73-vhba-module` | virtual CD/DVD drives (CDEmu) |
+| `linux-big73-v4l2loopback` | virtual cameras (BigCam, OBS) |
 | `linux-big73-broadcom-wl` | Broadcom BCM43xx Wi-Fi |
 | `linux-big73-r8168` | Realtek RTL8168 Ethernet |
 | `linux-big73-rtl8723bu` | Realtek RTL8723BU USB Wi-Fi |

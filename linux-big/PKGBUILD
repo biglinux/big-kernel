@@ -44,6 +44,7 @@ _modules=(
   r8168
   rtl8723bu
   tp_smapi
+  v4l2loopback
   vhba-module
   virtualbox-host-modules
   zfs
@@ -53,7 +54,7 @@ pkgbase=linux-big
 # The current series. The epoch puts these above every linux-big* package
 # from before the split (linux-big 7.2.15-1, linux-big-nvidia 615.71.09-...).
 pkgver=7.2
-pkgrel=1
+pkgrel=2
 epoch=1
 arch=('x86_64')
 url="https://github.com/biglinux/big-kernel"
