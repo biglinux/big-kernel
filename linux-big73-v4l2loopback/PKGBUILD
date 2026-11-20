@@ -1,0 +1,90 @@
+# Maintainer: Tales A. Mendonça <talesam@gmail.com>
+#
+# Video loopback (virtual camera) kernel module for linux-big, built from
+# v4l2loopback-dkms.
+#
+# Nothing here is edited by hand when a driver or the kernel is updated:
+#   - the module version is the vhba-module-dkms currently in the repositories the
+#     build runs against, asked from pacman;
+#   - the kernel is the linux-big described by ../<_kernel_pkg>/PKGBUILD, which
+#     sets the exact dependency and the pkgrel.
+# The dependency on the exact kernel is deliberate: when a new linux-big is
+# published before its modules, pacman holds the kernel update back instead
+# of booting a kernel without the module.
+#
+# Do not reference the pkgname or url variables anywhere in this file: a
+# testing build in the CI expands them textually.
+
+# The kernel this directory builds for. linux-big72-<module> and
+# linux-big73-<module> are the same PKGBUILD but for this line.
+_kernel_pkg=linux-big73
+_kernel_pkgbuild=../$_kernel_pkg/PKGBUILD
+_kpkgver=$(sed -n 's/^pkgver=//p' "$_kernel_pkgbuild")
+_kpkgrel=$(sed -n 's/^pkgrel=//p' "$_kernel_pkgbuild")
+_kernel="${_kpkgver}-${_kpkgrel}"
+_kernver="${_kernel}-big"
+# Secure Boot signing (see ../secureboot/sign.sh).
+source ../secureboot/sign.sh
+
+# pkgrel encodes the kernel, so every new linux-big is an upgrade of this
+# package too: 7.2.7-2 -> 7020702, 7.3.0-1 -> 7030001.
+_kernel_rel() {
+  local major minor patch
+  IFS=. read -r major minor patch <<< "$_kpkgver"
+  printf '%d%02d%02d%02d' "$major" "$minor" "${patch:-0}" "$_kpkgrel"
+}
+
+# A change here that must reach users on the same kernel and driver (a fixed
+# dependency, say) needs a new version: pacman does not reinstall an equal
+# one, and the repository's CDN keeps serving the old file under the old
+# name. Set _rebuild_for to the kernel it is for (_kernel, above) and
+# _rebuild to 1, 2...: pkgrel becomes 7020702.1. A new kernel ignores both,
+# so they never need resetting.
+_rebuild_for=
+_rebuild=
+_pkgrel() {
+  if [[ -n $_rebuild && $_rebuild_for == "$_kernel" ]]; then
+    echo "$(_kernel_rel).$_rebuild"
+  else
+    _kernel_rel
+  fi
+}
+
+# The version of a package in the repositories, without its pkgrel.
+_repo_version() {
+  LC_ALL=C pacman -Si "$1" 2>/dev/null | awk -F': ' '/^Version/ { sub(/-[^-]*$/, "", $2); print $2; exit }'
+}
+
+_check_kernel() {
+  local headers
+  headers="$(</usr/src/$_kernel_pkg/version)"
+  if [[ $headers != "$_kernver" ]]; then
+    error "$_kernel_pkg-headers is $headers, but $_kernel_pkgbuild describes $_kernver"
+    return 1
+  fi
+}
+
+pkgname=$_kernel_pkg-v4l2loopback
+pkgver=$(_repo_version v4l2loopback-dkms)
+pkgrel=$(_pkgrel)
+pkgdesc="Video loopback (virtual camera) kernel module for $_kernel_pkg"
+arch=('x86_64')
+url="https://github.com/umlaeute/v4l2loopback"
+license=('GPL-2.0-or-later')
+groups=("$_kernel_pkg-extramodules")
+depends=("$_kernel_pkg=$_kernel")
+makedepends=("$_kernel_pkg-headers=$_kernel" "v4l2loopback-dkms=$pkgver")
+provides=("v4l2loopback=$pkgver" 'V4L2LOOPBACK-MODULE')
+options=('!strip' '!debug')
+
+build() {
+  _check_kernel
+  fakeroot dkms build --dkmstree "$srcdir" -m "v4l2loopback/$pkgver" -k "$_kernver"
+}
+
+package() {
+  install -Dm644 -t "$pkgdir/usr/lib/modules/$_kernver/extramodules" \
+    "v4l2loopback/$pkgver/$_kernver/$CARCH/module/"*.ko*
+  _sb_sign_modules "$pkgdir" "$_kernver"
+  find "$pkgdir" -name '*.ko' -exec zstd --rm -19 {} +
+}

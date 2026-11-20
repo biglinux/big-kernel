@@ -60,6 +60,7 @@ MODULES = {
     "virtualbox-host-modules": "virtualbox-host-dkms",
     "zfs": "zfs-dkms",
     "vhba-module": "vhba-module-dkms",
+    "v4l2loopback": "v4l2loopback-dkms",
     "acpi_call": "acpi_call-dkms",
     "r8168": None,
     "rtl8723bu": None,
