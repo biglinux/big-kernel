@@ -46,14 +46,14 @@ _shimver=16.1-7
 # the new versions here and raises pkgrel, and the new release is built.
 # One 'package=version' a line.
 _built_with=(
-  'grub=2:2.16-3.1'
+  'grub=2:2.16-4'
   'grub-theme-biglinux=26.10.31-1730'
   'grub-theme-community=1:26.10.31-1730'
 )
 
 pkgname=big-secureboot
 pkgver=1.2.0
-pkgrel=1
+pkgrel=2
 pkgdesc="Secure Boot for BigLinux, set up as Easy Anti-Cheat requires: shim, a signed GRUB and the BigLinux key"
 arch=('x86_64')
 url="https://github.com/biglinux/big-kernel"
