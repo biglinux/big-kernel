@@ -19,8 +19,8 @@
 
 _basekernel=7.3
 pkgbase=linux-big73
-pkgver=7.3.5
-pkgrel=2
+pkgver=7.3.6
+pkgrel=1
 arch=('x86_64')
 url="https://github.com/biglinux/big-kernel"
 license=(GPL-2.0-only)
@@ -124,7 +124,7 @@ source=(https://cdn.kernel.org/pub/linux/kernel/v7.x/linux-${_basekernel}.tar.xz
         0300-efi-lock-down-the-kernel-in-Secure-Boot-mode.patch
 )
 sha256sums=('87363c24f10e06321eb362765521094e94471f6bff8bce2d6b3e40f39f004953'
-            'e4e0d4e145487087840f123650bed49f642756c34b4e613742c0a0019e0f15f4'
+            '11f630161b995ae31bbf79e9056e22b291bd47a389c9ad542091b4f342616718'
             '22446eb6189abd2f84b75d239a50ea55026c9869dae5c083a934e8706dd259a6'
             '36b420493e2467b99d7fa0d08cf9dfcd53c635f7fde249a0dbdd5b5db8c8bf62'
             'c21170eba77438abb8b8ab02aeccf16bfb2467a01303509945aa6b3a0fd16d31'
